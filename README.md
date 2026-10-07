@@ -107,8 +107,6 @@ AWS Organizationsの管理アカウントです。以下の管理を行います
     └── scp/                 # SCPの定義と適用
 ```
 
-`root-ou/`はAWS Organizationsの構成をフォルダ階層で表します。各OUのSCPはそのOUのフォルダに置きます。
-
 ### アカウント追加時の手順
 
 1. このリポジトリでアカウントを追加してapplyする
@@ -151,23 +149,3 @@ export TF_VAR_root_ou_id="r-xxxxxxxx"
 ## 設計上の注意点
 
 - SCPは管理アカウントには適用されない。管理アカウントはSCPに頼らず、アクセスできるユーザーとロールを最小限に絞る
-- SCPとIdentity Center、IAMロール、AWSサービスの権限を組み合わせた際の効果を確認する
-- `aws_organizations_policy_attachment`などを変更すると既存のアカウントに影響するため、事前に`terraform plan`で確認する
-- SCPは必要な操作が失われないよう、test・developmentのOUで検証してから適用範囲を広げる
-- 新しいアカウントやOUは、事前に名前・用途・所有者・環境を定義する
-- AWSアカウントは閉鎖すると復旧できない場合があるため、閉鎖前に必要なログの保全を確認する
-
-## 依存関係
-
-- Terraform v1.5以上
-- AWS Provider v5系
-- AWS Organizationsの管理アカウントの権限
-
-## 実装方針
-
-1. Terraformの基本設定とプロバイダー設定
-2. 既存のOU・アカウントのimport
-3. SCPの定義と適用
-4. タグポリシーの定義と適用
-5. IAM Identity Centerのユーザー、グループ、許可セット、割り当て
-6. 委任管理者の登録（GuardDuty、Security Hubなど）
