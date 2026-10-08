@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Terraform の provider（versions.tf と .terraform.lock.hcl）を更新する
+  - package-ecosystem: terraform
+    directories:
+      - /root-ou
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    groups:
+      terraform-providers:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: chore
+      include: scope
