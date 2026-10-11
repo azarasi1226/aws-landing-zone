@@ -7,11 +7,11 @@
   <title>SCP（Service Control Policies） | AWS Organization</title>
   <style>
     :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.site-header{padding:2.75rem max(1.25rem,calc((100% - 88rem)/2)) 2.25rem;color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.site-header h1{margin:0;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.2}.site-header p:last-child{max-width:720px;margin:.8rem 0 0;color:#e0f2fe}.layout{display:grid;grid-template-columns:12rem minmax(0,1fr);gap:1.5rem;width:min(90rem,100%);margin:2rem auto;padding:0 1.25rem}.sidebar{position:sticky;top:1.25rem;align-self:start;padding:1rem;border:1px solid #dbe5f0;border-radius:12px;background:#fff}.sidebar h2{margin:0 0 .65rem;color:#52657a;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar ul{display:grid;gap:.2rem;margin:0;padding:0;list-style:none}.sidebar a{display:block;padding:.45rem .6rem;border-radius:7px;color:#334e68;text-decoration:none}.sidebar a:hover,.sidebar a[aria-current=page]{color:#075985;background:#eaf6ff}.content{min-width:0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #dbe5f0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgb(16 42 67 / 6%)}.content h2{margin:2.2rem 0 .8rem;padding-bottom:.45rem;border-bottom:1px solid #e3ebf3;color:#123b5d;font-size:1.35rem}.content h2:first-child{margin-top:0}.content h3{margin:1.65rem 0 .55rem;color:#245b7a;font-size:1.08rem}.content p,.content ul,.content ol{margin-top:.65rem;margin-bottom:.9rem}.content li+li{margin-top:.25rem}.content table{width:100%;margin:1rem 0 1.35rem;border-collapse:collapse;font-size:.94rem}.content th,.content td{padding:.7rem .8rem;border:1px solid #dbe5f0;text-align:left;vertical-align:top}.content th{color:#163b59;background:#edf5fb;font-weight:700}.content code{padding:.12em .35em;border:1px solid #e2e8f0;border-radius:4px;background:#f5f7fa;font-family:Consolas,"Cascadia Code",monospace;font-size:.9em;overflow-wrap:anywhere}.content blockquote{margin:1rem 0;padding:.75rem 1rem;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;background:#effaff}.content blockquote p{margin:0}.site-footer{width:min(90rem,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:60em){.layout{grid-template-columns:1fr;gap:1rem;margin-top:1rem}.sidebar{position:static}.sidebar ul{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.content{padding:1.25rem}.content table{display:block;overflow-x:auto}}
+    .org-chart{margin:1.1rem 0 1.5rem}.group{padding:1rem 1.1rem 1.1rem;border-radius:14px}.group-org{border:2px solid #123b5d;background:#f7fafd}.group-root{border:2px dashed #9fbad1;background:#fff}.group-ou{border:1px solid #bfd4e5;background:#f2f8fd}.group-label{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:0;color:#123b5d;font-weight:700;line-height:1.5}.content .group-desc{margin:.2rem 0 .8rem;color:#52657a;font-size:.86rem;line-height:1.6}.ou-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem}.content .accounts{display:grid;gap:.5rem;margin:0;padding:0;list-style:none}.group-root>.accounts{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1rem}.content .account{margin:0;padding:.55rem .75rem;border:1px solid #dbe5f0;border-radius:8px;background:#fff;line-height:1.5}.account-name{display:flex;align-items:center;gap:.45rem;color:#123b5d;font-weight:700}.account-desc{display:block;margin-top:.15rem;color:#61758a;font-size:.84rem}.badge{display:inline-block;min-width:5.6rem;padding:.05rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-align:center}.badge-ou{color:#075985;background:#dbeefe}.badge-account{color:#7c4a03;background:#fdf0d5}.tag-unmanaged{display:inline-block;margin-left:.15rem;padding:0 .45rem;border:1px dashed #94a3b8;border-radius:999px;color:#52657a;background:#fff;font-size:.7rem;font-weight:700;white-space:nowrap}.content .chart-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;margin:.6rem 0 0;color:#52657a;font-size:.84rem;line-height:1.6}.chart-note .tag-unmanaged{margin-left:0}.content .table-note{margin:-.8rem 0 1.35rem;color:#52657a;font-size:.86rem}.content details.once{margin:1.65rem 0 .9rem;padding:.6rem 1rem;border:1px solid #dbe5f0;border-radius:10px;background:#f8fafc;color:#52657a}.content details.once summary{color:#245b7a;font-weight:700;cursor:pointer}.content details.once[open] summary{margin-bottom:.4rem}.content details.once p,.content details.once ul{font-size:.92rem}.content tbody th,.content .nowrap{white-space:nowrap}.content .scp-line{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.35rem 0 .8rem}.badge-scp{color:#fff;background:#b42318}.scp{display:inline-block;padding:.1rem .55rem;border:1px solid #f3c2c2;border-radius:6px;color:#9f1d1d;background:#fdf1f1;font-family:Consolas,"Cascadia Code",monospace;font-size:.82rem;font-weight:700}.scp-none{color:#61758a;font-size:.84rem}.verdict{display:inline-block;padding:0 .45rem;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}.verdict-deny{color:#fff;background:#b42318}.verdict-allow{color:#075985;background:#dbeefe}@media(max-width:60em){.ou-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <header class="site-header">
-    <p class="eyebrow">AWS Organization · Guardrails</p>
     <h1>SCP（Service Control Policies）</h1>
     <p>組織全体およびOUに適用する、AWS操作のガードレール。</p>
   </header>
@@ -27,33 +27,88 @@
       </ul>
     </nav>
     <main class="content">
-      <section aria-labelledby="policy">
-        <h2 id="policy">方針</h2>
-        <p>SCPは「許可」ではなく「禁止」を中心に管理し、例外は最小限にします。</p>
+      <section aria-labelledby="structure">
+        <h2 id="structure">SCPの適用範囲</h2>
+        <p><strong>SCPには禁止したい操作だけを書き（拒否リスト方式）、禁止の対象外にするロールは最小限にします。</strong>SCPはIAMの権限より優先されるため、Adminの権限を持つユーザーでも、SCPで禁止した操作はできません。</p>
+        <div class="org-chart" role="group" aria-label="SCPの適用範囲">
+          <div class="group group-org">
+            <p class="group-label">AWS Organizations</p>
+            <div class="group group-root">
+              <p class="group-label"><span class="badge badge-ou">OU</span>Root</p>
+              <p class="scp-line"><span class="badge badge-scp">SCP</span><span class="scp">guardrails</span><span class="scp">region-restriction</span></p>
+              <ul class="accounts">
+                <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>management<span class="tag-unmanaged">SCP適用外</span></span></li>
+              </ul>
+              <div class="ou-grid">
+                <div class="group group-ou">
+                  <p class="group-label"><span class="badge badge-ou">OU</span>security</p>
+                  <p class="scp-line"><span class="badge badge-scp">SCP</span><span class="scp">security-ou</span></p>
+                  <ul class="accounts">
+                    <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>log-archive</span></li>
+                    <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>audit</span></li>
+                  </ul>
+                </div>
+                <div class="group group-ou">
+                  <p class="group-label"><span class="badge badge-ou">OU</span>workload</p>
+                  <p class="scp-line"><span class="badge badge-scp">SCP</span><span class="scp-none">なし（Rootから継承のみ）</span></p>
+                  <ul class="accounts">
+                    <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>test</span></li>
+                    <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>development</span></li>
+                    <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>production</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="table-note">上位のOUに付けたSCPは配下のOU・アカウントにも効くため、security・workloadにもRootのSCPが適用される。managementアカウントにはSCPが一切効かない</p>
       </section>
+
       <section aria-labelledby="configuration">
         <h2 id="configuration">設定内容</h2>
+        <p>「禁止する相手」が「除外ロール以外」のものは、aws-foundationリポジトリが各アカウントの設定に使う実行ロール（除外ロール）だけが実行できます。</p>
+
+        <h3>guardrails（Root）</h3>
         <table>
-          <thead><tr><th scope="col">SCP</th><th scope="col">適用先</th><th scope="col">禁止する操作</th></tr></thead>
+          <thead><tr><th scope="col">禁止する操作</th><th scope="col" class="nowrap">禁止する相手</th></tr></thead>
           <tbody>
-            <tr><td>guardrails</td><td>Root OU</td><td>組織からの離脱、rootユーザーの利用、IAMユーザー・アクセスキーの作成、CloudTrail・Config・GuardDuty・Security Hubの停止・削除</td></tr>
-            <tr><td>region-restriction</td><td>Root OU</td><td>許可リージョン（<code>allowed_regions</code>）以外の利用。IAM、Organizationsなどのグローバルサービスは除く</td></tr>
-            <tr><td>security-ou</td><td>security OU</td><td>ログ保管用S3バケット（名前に<code>log-archive</code>を含む）の削除・設定変更、EC2・ECS・EKS・Lambda・RDSの作成</td></tr>
+            <tr><td>組織からの離脱</td><td><span class="verdict verdict-deny">全員</span></td></tr>
+            <tr><td>ルートユーザーでのすべての操作</td><td><span class="verdict verdict-deny">全員</span></td></tr>
+            <tr><td>IAMユーザー・アクセスキーの作成</td><td><span class="verdict verdict-deny">全員</span></td></tr>
+            <tr><td>CloudTrail・Config・GuardDuty・Security Hubの停止・削除・設定変更</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
           </tbody>
         </table>
-        <p>セキュリティサービスの停止禁止とリージョン制限は、<code>scp_exempt_role_names</code>のロール（既定は<code>OrganizationAccountAccessRole</code>）を対象外にします。aws-foundationリポジトリから各アカウントのセキュリティサービスを設定するためです。</p>
-        <p>ログ保管用S3バケットとそのオブジェクトの削除は、除外ロールを含めて誰にも許可しません。古いログの削除はS3のライフサイクルルールで行います。</p>
+
+        <h3>region-restriction（Root）</h3>
+        <table>
+          <thead><tr><th scope="col">禁止する操作</th><th scope="col" class="nowrap">禁止する相手</th></tr></thead>
+          <tbody>
+            <tr><td>許可リージョン（<code>ap-northeast-1</code>、<code>us-east-1</code>）以外での操作。IAM、Organizations、CloudFront、Route 53などのグローバルサービスは除く</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3>security-ou（security OU）</h3>
+        <table>
+          <thead><tr><th scope="col">禁止する操作</th><th scope="col" class="nowrap">禁止する相手</th></tr></thead>
+          <tbody>
+            <tr><td>ログ保管用S3バケット（名前に<code>log-archive</code>を含む）と、その中のログの削除</td><td><span class="verdict verdict-deny">全員</span></td></tr>
+            <tr><td>ログ保管用S3バケットの設定変更（バケットポリシー、バージョニング、暗号化、ライフサイクルなど）</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
+            <tr><td>EC2・ECS・EKS・Lambda・RDSの作成</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">※ Rootのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/scp.tf"><code>root-ou/scp.tf</code></a>、security OUのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/security-ou/scp.tf"><code>root-ou/security-ou/scp.tf</code></a>で設定する。許可リージョンと除外ロールは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>root-ou/variables.tf</code></a>で指定する</p>
+
+        <h3>除外ロール</h3>
+        <p>既定は<code>OrganizationAccountAccessRole</code>です。aws-foundationリポジトリから、各アカウントのセキュリティサービスやログ保管用S3バケットを設定するために除外しています。ログの削除だけは除外ロールにも許可せず、古いログはS3のライフサイクルルールで削除します。</p>
       </section>
-      <section aria-labelledby="scope">
-        <h2 id="scope">対象・集約先</h2>
-        <ul><li>対象アカウント：全アカウント</li><li>集約アカウント：-</li></ul>
-      </section>
+
       <section aria-labelledby="notes">
         <h2 id="notes">注意点</h2>
         <ul>
-          <li>SCPはmanagementアカウントには適用されない</li>
-          <li>1つの対象に付けられるSCPは最大5つ（既定の<code>FullAWSAccess</code>を含む）</li>
-          <li>SCPは1つあたり最大5,120文字</li>
+          <li><strong>managementアカウントにはSCPが効かない。managementはSCPに頼らず、アクセスできるユーザーとロールを最小限に絞る</strong></li>
+          <li>許可リージョン以外を使う場合は、先に<code>allowed_regions</code>へ追加する。追加しないと、そのリージョンではリソースを作成できない</li>
+          <li>メンバーアカウントのルートユーザーは何もできない。ルートユーザーでしかできない作業が必要になった場合は、一時的にguardrailsを外す</li>
+          <li>1つの対象に付けられるSCPは最大5つ（既定の<code>FullAWSAccess</code>を含む）。SCPは1つあたり最大5,120文字</li>
         </ul>
       </section>
     </main>
