@@ -2,6 +2,8 @@
 
 AWS Organizationsの構成（OU、アカウント、SCP、タグポリシー）と、IAM Identity Centerによる各アカウントへのアクセスを管理するリポジトリです。
 
+[📚 ドキュメントサイト](https://azarasi1226.github.io/aws-organization/)
+
 各アカウント内のリソース（ログ基盤、セキュリティ監視、アカウントベースラインなど）は`aws-foundation`リポジトリで管理します。
 
 ## 目的
@@ -77,10 +79,10 @@ AWS Organizationsの管理アカウントです。以下の管理を行います
 
 | サービス | 対象アカウント | 概要 |
 |---|---|---|
-| [AWS Organizations](docs/organizations.html) | management | OU・アカウントの作成と管理、委任管理者の登録 |
-| [SCP](docs/scp.html) | 全アカウント | 全アカウント共通のガードレール |
-| [タグポリシー](docs/tag-policy.html) | 全アカウント | タグのキー名・値の表記統一 |
-| [IAM Identity Center](docs/iam-identity-center.html) | 全アカウント | グループ、許可セットと、各アカウントへの割り当て（ユーザーは手動管理） |
+| [AWS Organizations](https://azarasi1226.github.io/aws-organization/organizations.html) | management | OU・アカウントの作成と管理、委任管理者の登録 |
+| [SCP](https://azarasi1226.github.io/aws-organization/scp.html) | 全アカウント | 全アカウント共通のガードレール |
+| [タグポリシー](https://azarasi1226.github.io/aws-organization/tag-policy.html) | 全アカウント | タグのキー名・値の表記統一 |
+| [IAM Identity Center](https://azarasi1226.github.io/aws-organization/iam-identity-center.html) | 全アカウント | グループ、許可セットと、各アカウントへの割り当て（ユーザーは手動管理） |
 
 ## Terraform構成
 
