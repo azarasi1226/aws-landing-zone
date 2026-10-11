@@ -1,0 +1,10 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfplan
+
+# 環境ごとの値（.example をコピーして作成する）
+backend.hcl
+terraform.tfvars

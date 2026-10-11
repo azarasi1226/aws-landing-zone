@@ -19,10 +19,11 @@ AWS Organizationsの構成（OU、アカウント、SCP、タグポリシー）�
 - management account：AWS Organizationsを有効化したアカウント
 - Root OU：AWS Organizationsの有効化時に自動作成される
 - IAM Identity Center：management accountで組織インスタンスとして有効化し、Terraform実行者に管理者権限の許可セットを割り当て済み
+- Terraformのstateを保存するS3バケット
 
 > Terraform実行者への管理者権限の割り当ては、設定ミスで自分が締め出されないよう、Terraformでは管理せず手動のまま残します。
 
-management accountのIDとRoot OUのIDは変数で渡します（[既存のRoot OUと管理アカウントID](#既存のroot-ouと管理アカウントid)）。
+組織そのもの（`aws_organizations_organization`）はimportして管理し、management accountのIDとRoot OUのIDはそこから取得します。
 
 ## AWS Organizationsの構成
 
@@ -76,10 +77,10 @@ AWS Organizationsの管理アカウントです。以下の管理を行います
 
 | サービス | 対象アカウント | 概要 |
 |---|---|---|
-| [AWS Organizations](docs/organizations.md) | management | OU・アカウントの作成と管理、委任管理者の登録 |
-| [SCP](docs/scp.md) | 全アカウント | 全アカウント共通のガードレール |
-| [タグポリシー](docs/tag-policy.md) | 全アカウント | タグのキー名・値の表記統一 |
-| [IAM Identity Center](docs/iam-identity-center.md) | 全アカウント | ユーザー、グループ、許可セットと、各アカウントへの割り当て |
+| [AWS Organizations](docs/organizations.html) | management | OU・アカウントの作成と管理、委任管理者の登録 |
+| [SCP](docs/scp.html) | 全アカウント | 全アカウント共通のガードレール |
+| [タグポリシー](docs/tag-policy.html) | 全アカウント | タグのキー名・値の表記統一 |
+| [IAM Identity Center](docs/iam-identity-center.html) | 全アカウント | グループ、許可セットと、各アカウントへの割り当て（ユーザーは手動管理） |
 
 ## Terraform構成
 
@@ -91,20 +92,36 @@ AWS Organizationsの管理アカウントです。以下の管理を行います
 │   ├── main.tf              # 委任管理者の設定、配下OUの呼び出し
 │   ├── scp.tf               # Root OUに適用するSCP
 │   ├── tag_policy.tf
-│   ├── identity_center.tf   # ユーザー、グループ、許可セット、アカウントへの割り当て
+│   ├── identity_center.tf                  # Identity Centerの共通設定
+│   ├── identity_center_groups.tf           # グループと、アカウントへの割り当て
+│   ├── identity_center_permission_sets.tf  # 許可セット
 │   ├── providers.tf
 │   ├── backend.tf
+│   ├── backend.hcl.example
 │   ├── versions.tf
 │   ├── variables.tf
+│   ├── terraform.tfvars.example
 │   ├── outputs.tf           # アカウントID
 │   ├── security-ou/
 │   │   ├── main.tf          # OUとlog-archive、auditアカウントの作成
 │   │   └── scp.tf           # security-ouに適用するSCP
 │   └── workload-ou/
-│       ├── main.tf          # OUとtest、development、productionアカウントの作成
-│       └── scp.tf           # workload-ouに適用するSCP
+│       └── main.tf          # OUとtest、development、productionアカウントの作成
 └── modules/
     └── scp/                 # SCPの定義と適用
+```
+
+### 使い方
+
+```bash
+cd root-ou
+cp backend.hcl.example backend.hcl            # stateのS3バケットを設定
+cp terraform.tfvars.example terraform.tfvars  # アカウントのメールアドレスなどを設定
+
+export AWS_PROFILE=<managementの管理者プロファイル>
+terraform init -backend-config=backend.hcl
+terraform plan
+terraform apply
 ```
 
 ### アカウント追加時の手順
@@ -115,36 +132,23 @@ AWS Organizationsの管理アカウントです。以下の管理を行います
 
 ### 既存リソースのTerraform移行
 
-既存のOUやアカウントは`terraform import`で状態へ取り込みます。
+既存の組織、OU、アカウントは、初回のplan前に`terraform import`で状態へ取り込みます。
 
 ```bash
-cd root-ou
-terraform import module.security_ou.aws_organizations_organizational_unit.this ou-xxxxxxxx
+terraform import aws_organizations_organization.this o-xxxxxxxxxx
+terraform import module.security_ou.aws_organizations_organizational_unit.this ou-xxxx-xxxxxxxx
 terraform import module.security_ou.aws_organizations_account.log_archive 111111111111
+terraform import module.security_ou.aws_organizations_account.audit 222222222222
+terraform import module.workload_ou.aws_organizations_organizational_unit.this ou-xxxx-yyyyyyyy
+terraform import module.workload_ou.aws_organizations_account.test 333333333333
+terraform import module.workload_ou.aws_organizations_account.development 444444444444
+terraform import module.workload_ou.aws_organizations_account.production 555555555555
 ```
 
-対象のOU ID、アカウントIDはAWS OrganizationsコンソールまたはAWS CLIで事前に確認し、`terraform plan`で差分がないことを確認します。
+import後の`terraform plan`で、以下に差分がないことを確認してからapplyします。
 
-### 既存のRoot OUと管理アカウントID
-
-Root OUと管理アカウントはAWS Organizations有効化時に存在するため、Terraformの作成対象ではなく変数として渡します。
-
-```hcl
-variable "management_account_id" {
-  description = "AWS Organizationsの管理アカウントID"
-  type        = string
-}
-
-variable "root_ou_id" {
-  description = "AWS OrganizationsのRoot OU ID"
-  type        = string
-}
-```
-
-```bash
-export TF_VAR_management_account_id="111111111111"
-export TF_VAR_root_ou_id="r-xxxxxxxx"
-```
+- `aws_service_access_principals`：既に有効なサービスが変数に含まれていないと、そのサービスの組織連携が無効化される
+- アカウントの`name`、`email`：既存の値と異なると、アカウントの作り直しになる場合がある
 
 ## 設計上の注意点
 
