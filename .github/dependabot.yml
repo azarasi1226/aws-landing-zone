@@ -18,6 +18,8 @@ updates:
       include: scope
 
   # dev container の feature（.devcontainer/devcontainer.json）を更新する
+  # Terraform 本体のバージョン（feature の "version" オプションと versions.tf の
+  # required_version）は Dependabot の対象外なので、手動で合わせて更新する
   - package-ecosystem: devcontainers
     directory: /
     schedule:

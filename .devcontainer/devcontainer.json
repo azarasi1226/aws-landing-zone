@@ -16,7 +16,11 @@
   ],
   "customizations": {
     "vscode": {
-      "extensions": ["hashicorp.terraform"]
+      "extensions": [
+        "hashicorp.terraform",
+        "anthropic.claude-code",
+        "ms-vscode.live-server"
+      ]
     }
   }
 }
