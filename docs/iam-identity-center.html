@@ -7,6 +7,7 @@
   <title>IAM Identity Center | AWS Organization</title>
   <style>
     :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.site-header{padding:2.75rem max(1.25rem,calc((100% - 980px)/2)) 2.25rem;color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.site-header h1{margin:0;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.2}.site-header p:last-child{max-width:720px;margin:.8rem 0 0;color:#e0f2fe}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:2rem;width:min(1180px,100%);margin:2rem auto;padding:0 1.25rem}.sidebar{position:sticky;top:1.25rem;align-self:start;padding:1rem;border:1px solid #dbe5f0;border-radius:12px;background:#fff}.sidebar h2{margin:0 0 .65rem;color:#52657a;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar ul{display:grid;gap:.2rem;margin:0;padding:0;list-style:none}.sidebar a{display:block;padding:.45rem .6rem;border-radius:7px;color:#334e68;text-decoration:none}.sidebar a:hover,.sidebar a[aria-current=page]{color:#075985;background:#eaf6ff}.content{min-width:0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #dbe5f0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgb(16 42 67 / 6%)}.content h2{margin:2.2rem 0 .8rem;padding-bottom:.45rem;border-bottom:1px solid #e3ebf3;color:#123b5d;font-size:1.35rem}.content h2:first-child{margin-top:0}.content h3{margin:1.65rem 0 .55rem;color:#245b7a;font-size:1.08rem}.content p,.content ul,.content ol{margin-top:.65rem;margin-bottom:.9rem}.content li+li{margin-top:.25rem}.content table{width:100%;margin:1rem 0 1.35rem;border-collapse:collapse;font-size:.94rem}.content th,.content td{padding:.7rem .8rem;border:1px solid #dbe5f0;text-align:left;vertical-align:top}.content th{color:#163b59;background:#edf5fb;font-weight:700}.content code{padding:.12em .35em;border:1px solid #e2e8f0;border-radius:4px;background:#f5f7fa;font-family:Consolas,"Cascadia Code",monospace;font-size:.9em;overflow-wrap:anywhere}.content blockquote{margin:1rem 0;padding:.75rem 1rem;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;background:#effaff}.content blockquote p{margin:0}.site-footer{width:min(1180px,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:760px){.layout{grid-template-columns:1fr;gap:1rem;margin-top:1rem}.sidebar{position:static}.sidebar ul{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.content{padding:1.25rem}.content table{display:block;overflow-x:auto}}
+    .content details.once{margin:1.65rem 0 .9rem;padding:.6rem 1rem;border:1px solid #dbe5f0;border-radius:10px;background:#f8fafc;color:#52657a}.content details.once summary{color:#245b7a;font-weight:700;cursor:pointer}.content details.once[open] summary{margin-bottom:.4rem}.content details.once p,.content details.once ol{font-size:.92rem}.content tbody th,.content .nowrap{white-space:nowrap}.content .table-note{margin:-.8rem 0 1.35rem;color:#52657a;font-size:.86rem}.access-flow{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin:1.1rem 0 1.6rem}.flow-node{padding:.7rem .95rem;border:1px solid #bfd4e5;border-radius:10px;background:#f5faff}.content .flow-kind{margin:0;color:#61758a;font-size:.75rem;font-weight:700;letter-spacing:.04em}.content .flow-name{margin:.1rem 0 0;color:#123b5d;font-weight:700}.flow-arrow{display:flex;flex-direction:column;align-items:center;color:#7b93a8;font-size:1.3rem;font-weight:700;line-height:1}.flow-arrow span{margin-bottom:.2rem;font-size:.72rem;letter-spacing:.04em}.content .flow-assign{display:grid;gap:.3rem;margin:.35rem 0 0;padding:0;list-style:none}.content .flow-assign li{display:flex;justify-content:space-between;gap:1rem;margin:0;padding:.25rem .55rem;border:1px solid #dbe5f0;border-radius:6px;background:#fff;font-size:.88rem}.flow-assign strong{color:#123b5d}.flow-arrow b{font-weight:700}.flow-node.is-manual{border-style:dashed;border-color:#94a3b8;background:#fff}.flow-arrow.is-manual{color:#94a3b8}.flow-arrow.is-tf{color:#5c4ee5}.content .flow-kind{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem}.scope{display:inline-block;padding:0 .45rem;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.02em;white-space:nowrap}.scope-manual{border:1px dashed #94a3b8;color:#52657a;background:#fff}.scope-tf{color:#fff;background:#5c4ee5}@media(max-width:760px){.access-flow{flex-direction:column;align-items:stretch}.flow-arrow{flex-direction:row;gap:.4rem;align-self:center}.flow-arrow span{margin:0}.flow-arrow b{transform:rotate(90deg)}}
   </style>
 </head>
 <body>
@@ -27,79 +28,96 @@
       </ul>
     </nav>
     <main class="content">
-      <section aria-labelledby="policy">
-        <h2 id="policy">方針</h2>
-        <p>各アカウントへのアクセスはIAM Identity Centerに一本化し、IAMユーザーは作成しません。</p>
-        <p>権限はユーザーではなくグループに割り当て、ユーザーはグループに所属させることでアクセスできるアカウントと権限を決めます。</p>
-        <table>
-          <thead><tr><th scope="col">対象</th><th scope="col">管理方法</th><th scope="col">場所</th></tr></thead>
-          <tbody>
-            <tr><td>許可セット</td><td>Terraform</td><td><code>root-ou/identity_center_permission_sets.tf</code></td></tr>
-            <tr><td>グループと、グループへの許可セット・アカウントの割り当て</td><td>Terraform</td><td><code>root-ou/identity_center_groups.tf</code></td></tr>
-            <tr><td>ユーザーと、ユーザーのグループへの所属</td><td>手動</td><td>Identity Centerのコンソール</td></tr>
-            <tr><td>Terraform実行者への管理者権限の割り当て</td><td>手動</td><td>Identity Centerのコンソール</td></tr>
-          </tbody>
-        </table>
-        <p>ユーザーは入退社や異動で頻繁に変わり、退職時はすぐにアクセスを止める必要があるため、Terraformでは管理しません。Terraform実行者への管理者権限は、設定ミスで自分が締め出されないよう手動のまま残します。</p>
+      <section aria-labelledby="structure">
+        <h2 id="structure">ユーザー・グループ・許可セットの関係</h2>
+        <p><strong>各アカウントへのアクセスはIAM Identity Centerに一本化し、IAMユーザーは作成しません。</strong></p>
+        <div class="access-flow" role="group" aria-label="ユーザー・グループ・許可セットの関係の例">
+          <div class="flow-node is-manual">
+            <p class="flow-kind">ユーザー<span class="scope scope-manual">手動管理</span></p>
+            <p class="flow-name">山田さん</p>
+          </div>
+          <div class="flow-arrow is-manual"><span>所属</span><b aria-hidden="true">→</b></div>
+          <div class="flow-node">
+            <p class="flow-kind">グループ<span class="scope scope-tf">Terraform管理</span></p>
+            <p class="flow-name">developers</p>
+          </div>
+          <div class="flow-arrow is-tf"><span>割り当て</span><b aria-hidden="true">→</b></div>
+          <div class="flow-node">
+            <p class="flow-kind">アカウント ＋ 許可セット<span class="scope scope-tf">Terraform管理</span></p>
+            <ul class="flow-assign">
+              <li><strong>test</strong>PowerUser</li>
+              <li><strong>development</strong>PowerUser</li>
+              <li><strong>production</strong>Observer</li>
+            </ul>
+          </div>
+        </div>
+        <p class="table-note">例：山田さんをdevelopersに所属させると、testとdevelopmentにはPowerUser、productionにはObserverで入れるようになる<br>ユーザーの作成とグループへの所属は、入退社や異動で頻繁に変わるため手動、それ以外はTerraformで管理する</p>
       </section>
+
       <section aria-labelledby="configuration">
         <h2 id="configuration">設定内容</h2>
         <h3>許可セット</h3>
         <table>
-          <thead><tr><th scope="col">許可セット</th><th scope="col">ポリシー</th><th scope="col">セッション</th></tr></thead>
+          <thead><tr><th scope="col">許可セット</th><th scope="col">ポリシー</th><th scope="col">できること</th><th scope="col" class="nowrap">セッション</th></tr></thead>
           <tbody>
-            <tr><td>Admin</td><td>AdministratorAccess</td><td>1時間</td></tr>
-            <tr><td>PowerUser</td><td>PowerUserAccess（IAMとOrganizationsを除く全操作）</td><td>4時間</td></tr>
-            <tr><td>ReadOnly</td><td>ReadOnlyAccess</td><td>4時間</td></tr>
+            <tr><th scope="row">Admin</th><td>AdministratorAccess</td><td>すべての操作</td><td class="nowrap">1時間</td></tr>
+            <tr><th scope="row">PowerUser</th><td>PowerUserAccess</td><td>IAM・Organizations・アカウント設定以外のすべての操作</td><td class="nowrap">4時間</td></tr>
+            <tr><th scope="row">Observer</th><td>ViewOnlyAccess<br>＋ ログ・メトリクスの読み取り</td><td>リソースの閲覧と、障害調査のためのログ・メトリクスの読み取り。変更はできず、S3の中身などのデータは読めない</td><td class="nowrap">4時間</td></tr>
+            <tr><th scope="row">SecurityAudit</th><td>SecurityAudit<br>ViewOnlyAccess</td><td>セキュリティ設定とリソースの閲覧のみ。データは読めない</td><td class="nowrap">4時間</td></tr>
           </tbody>
         </table>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/identity_center_permission_sets.tf"><code>root-ou/identity_center_permission_sets.tf</code></a>で設定する</p>
+
         <h3>グループと割り当て</h3>
         <table>
           <thead><tr><th scope="col">グループ</th><th scope="col">management</th><th scope="col">log-archive</th><th scope="col">audit</th><th scope="col">test</th><th scope="col">development</th><th scope="col">production</th></tr></thead>
           <tbody>
             <tr><th scope="row">admins</th><td>Admin</td><td>Admin</td><td>Admin</td><td>Admin</td><td>Admin</td><td>Admin</td></tr>
-            <tr><th scope="row">developers</th><td>-</td><td>-</td><td>-</td><td>PowerUser</td><td>PowerUser</td><td>ReadOnly</td></tr>
+            <tr><th scope="row">developers</th><td>-</td><td>-</td><td>-</td><td>PowerUser</td><td>PowerUser</td><td>Observer</td></tr>
+            <tr><th scope="row">security-auditors</th><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td></tr>
           </tbody>
         </table>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/identity_center_groups.tf"><code>root-ou/identity_center_groups.tf</code></a>で設定する</p>
       </section>
-      <section aria-labelledby="users">
-        <h2 id="users">ユーザーの管理</h2>
-        <p>managementアカウントのIAM Identity Centerコンソールで行います。</p>
+
+      <section aria-labelledby="operations">
+        <h2 id="operations">手動運用手順</h2>
+        <p>ユーザーの操作は、managementアカウントのIAM Identity Centerコンソールで行います。</p>
+        <details class="once">
+          <summary>初回のみ：MFAの必須化</summary>
+          <p>MFAの設定はTerraformでは管理していないため、コンソールで設定します。</p>
+          <ol>
+            <li>「設定」→「認証」タブの「多要素認証」で「設定」を開く</li>
+            <li>MFAを求めるタイミングを「サインインのたびに」にする</li>
+            <li>MFAデバイスを登録していないユーザーには、「サインイン時にMFAデバイスの登録を求める」にする</li>
+          </ol>
+        </details>
         <h3>ユーザーの追加</h3>
         <ol>
           <li>「ユーザー」→「ユーザーを追加」を開く</li>
           <li>ユーザー名、メールアドレス、氏名を入力する</li>
-          <li>「グループにユーザーを追加」で、所属させるグループ（<code>admins</code>、<code>developers</code>など）を選ぶ</li>
-          <li>作成すると、入力したメールアドレスに招待メールが届く。ユーザーはメールからパスワードとMFAを設定する</li>
+          <li>「グループにユーザーを追加」で、所属させるグループを選ぶ</li>
+          <li>作成すると招待メールが届く。ユーザーはメールからパスワードとMFAを設定する</li>
         </ol>
-        <h3>ユーザーの所属グループの変更</h3>
+        <h3>所属グループの変更</h3>
         <ol>
           <li>「ユーザー」から対象のユーザーを開く</li>
           <li>「グループ」タブでグループを追加・削除する</li>
         </ol>
         <h3>ユーザーの削除（退職時など）</h3>
         <ol>
-          <li>「ユーザー」から対象のユーザーを開き、「ユーザーアクセスを無効化」する（すぐにサインインできなくなる）</li>
+          <li>「ユーザー」から対象のユーザーを開き、「ユーザーアクセスを無効化」する。新しくサインインできなくなる</li>
+          <li>同じユーザーの「アクティブなセッション」をすべて削除する</li>
+          <li>すぐにアクセスを止める必要がある場合は、ユーザーが使っていた各アカウントのIAMコンソールで、<code>AWSReservedSSO_</code>で始まるロールの「アクティブなセッションを取り消す」を実行する。そのロールを使っている全員のセッションが切れる</li>
           <li>必要に応じてユーザーを削除する</li>
         </ol>
-        <blockquote><p>無効化・削除の前に発行済みのセッションは、許可セットのセッション時間が切れるまで有効です。すぐに止める必要がある場合は、各アカウントでセッションを取り消してください。</p></blockquote>
-        <h3>アクセスできるアカウントや権限の変更</h3>
-        <p>ユーザー個別には設定せず、グループの割り当てを変更します。</p>
-        <ul>
-          <li>既存のグループの権限を変える：<code>root-ou/identity_center_groups.tf</code>の<code>sso_groups</code>を編集してapplyする</li>
-          <li>新しい役割が必要：<code>sso_groups</code>にグループを追加してapplyし、コンソールでユーザーを所属させる</li>
-          <li>新しい権限が必要：<code>root-ou/identity_center_permission_sets.tf</code>に許可セットを追加する</li>
-        </ul>
       </section>
-      <section aria-labelledby="scope">
-        <h2 id="scope">対象・集約先</h2>
-        <ul><li>対象アカウント：全アカウント</li><li>集約アカウント：-</li></ul>
-      </section>
+
       <section aria-labelledby="notes">
         <h2 id="notes">注意点</h2>
         <ul>
-          <li>ユーザーへ許可セットを直接割り当てない。誰がどの権限を持つかがグループから追えなくなる</li>
-          <li><code>admins</code>グループはmanagementアカウントの管理者権限を持つため、所属させるのは組織の管理者だけにする</li>
+          <li><strong><code>admins</code>グループはmanagementアカウントの管理者権限を持つ。所属させるのは組織の管理者だけにする</strong></li>
+          <li>ユーザーを無効化・削除しても、発行済みの認証情報は許可セットのセッション時間（最大4時間）が切れるまで使える。すぐに止める手順は「ユーザーの削除」を参照</li>
           <li>グループ名を変更するとTerraform上は作り直しになり、所属しているユーザーが外れる</li>
         </ul>
       </section>

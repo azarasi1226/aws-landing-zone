@@ -29,51 +29,7 @@ AWS Organizationsの構成（OU、アカウント、SCP、タグポリシー）�
 
 ## AWS Organizationsの構成
 
-```text
-📁 Root OU
-├── 👤 management account
-│
-├── 📁 security OU
-│   ├── 👤 log-archive account
-│   └── 👤 audit account
-│
-└── 📁 workload OU
-    ├── 👤 test account
-    ├── 👤 development account
-    └── 👤 production account
-```
-
-## OUとアカウントの役割
-
-### 👤 management account
-
-AWS Organizationsの管理アカウントです。以下の管理を行います。
-
-- Organizationsの構成管理
-- AWSアカウントの作成・招待・削除
-- 請求・予算・コスト管理
-- ルートアカウントの運用
-
-> 管理アカウントには、アプリケーションや本番ワークロードを直接配置しないことを推奨します。
-
-### 📁 security OU
-
-セキュリティ監視・監査を担当するOUです。
-
-- 👤 log-archive account：ログを集約・長期保管する
-  - CloudTrail
-  - Config
-- 👤 audit account：委任管理者として組織全体を監視し、セキュリティ通知・運用の受け皿となる
-  - GuardDuty
-  - Security Hub
-
-### 📁 workload OU
-
-アプリケーションワークロードを配置するOUです。
-
-- 👤 test account
-- 👤 development account
-- 👤 production account
+OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-organization/organizations.html)にまとめています。
 
 ## 管理対象
 
@@ -149,7 +105,7 @@ terraform import module.workload_ou.aws_organizations_account.production 5555555
 
 import後の`terraform plan`で、以下に差分がないことを確認してからapplyします。
 
-- `aws_service_access_principals`：既に有効なサービスが変数に含まれていないと、そのサービスの組織連携が無効化される
+- `aws_service_access_principals`：既に有効なサービスが変数に含まれていないと、そのサービスの信頼されたアクセスが無効化される
 - アカウントの`name`、`email`：既存の値と異なると、アカウントの作り直しになる場合がある
 
 ## 設計上の注意点
