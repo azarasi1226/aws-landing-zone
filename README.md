@@ -71,6 +71,8 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
 
 ### 使い方
 
+VS Codeで「Dev Containers: Reopen in Container」を実行し、dev containerの中で作業します。Terraformのバージョンは`.devcontainer/devcontainer.json`で固定しています。
+
 ```bash
 cd root-ou
 cp backend.hcl.example backend.hcl            # stateのS3バケットを設定

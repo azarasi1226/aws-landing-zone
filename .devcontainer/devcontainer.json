@@ -1,0 +1,22 @@
+{
+  "name": "aws-organization",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    // Terraformのバージョンは root-ou/versions.tf の required_version と合わせる
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.16.5",
+      "tflint": "none",
+      "terragrunt": "none"
+    },
+    "ghcr.io/devcontainers/features/aws-cli:1": {}
+  },
+  "mounts": [
+    // ホストのAWSの設定（プロファイル、SSOのキャッシュ）をコンテナから使う
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": ["hashicorp.terraform"]
+    }
+  }
+}

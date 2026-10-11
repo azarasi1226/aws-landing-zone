@@ -1,5 +1,6 @@
 terraform {
-  required_version = ">= 1.10"
+  # .devcontainer/devcontainer.json のTerraformのバージョンと合わせる
+  required_version = ">= 1.16"
 
   required_providers {
     aws = {

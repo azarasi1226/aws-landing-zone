@@ -60,7 +60,7 @@ variable "allowed_regions" {
 }
 
 variable "scp_exempt_role_names" {
-  description = "セキュリティサービスの設定変更とリージョン制限から除外するIAMロール名（aws-foundationの実行ロールなど）"
+  description = "SCPの一部の禁止（セキュリティサービスの設定変更、リージョン制限、security OUのログバケット設定変更など）から除外するIAMロール名（aws-foundationの実行ロールなど）"
   type        = list(string)
   default     = ["OrganizationAccountAccessRole"]
 }

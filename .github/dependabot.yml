@@ -16,3 +16,15 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+
+  # dev container の feature（.devcontainer/devcontainer.json）を更新する
+  - package-ecosystem: devcontainers
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    commit-message:
+      prefix: chore
+      include: scope
