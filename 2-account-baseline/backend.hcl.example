@@ -1,0 +1,5 @@
+# terraform init -backend-config=backend.hcl で読み込む
+bucket       = "<tfstateを保存するS3バケット名>"
+key          = "aws-organization/account-baseline.tfstate"
+region       = "ap-northeast-1"
+use_lockfile = true # S3のネイティブロック（DynamoDB不要）
