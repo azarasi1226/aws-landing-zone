@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: terraform
     directories:
       - /1-organization
-      - /2-foundation
+      - /2-account-baseline
     schedule:
       interval: weekly
       day: monday

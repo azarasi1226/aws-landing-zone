@@ -76,7 +76,7 @@
 
       <section aria-labelledby="configuration">
         <h2 id="configuration">設定内容</h2>
-        <p>「禁止する相手」が「除外ロール以外」のものは、<code>2-foundation/</code>が各アカウントの設定に使う実行ロール（除外ロール）だけが実行できます。</p>
+        <p>「禁止する相手」が「除外ロール以外」のものは、<code>2-account-baseline/</code>が各アカウントの設定に使う実行ロール（除外ロール）だけが実行できます。</p>
 
         <h3>guardrails（Root）</h3>
         <table>
@@ -93,7 +93,7 @@
         <table>
           <thead><tr><th scope="col">禁止する操作</th><th scope="col" class="nowrap">禁止する相手</th></tr></thead>
           <tbody>
-            <tr><td>許可リージョン（<code>ap-northeast-1</code>、<code>us-east-1</code>）以外での操作。IAM、Organizations、CloudFront、Route 53などのグローバルサービスは除く</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
+            <tr><td>許可リージョン（<code>ap-northeast-1</code>、<code>us-east-1</code>）以外での操作。IAM、Organizations、CloudFront、Route 53などのグローバルサービスと、認証に使うSTSは除く。KMSやConfigなどリージョンごとのサービスは除かない</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
           </tbody>
         </table>
 
@@ -109,7 +109,7 @@
         <p class="table-note">※ Rootのものは<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/scp.tf"><code>1-organization/scp.tf</code></a>、security OUのものは<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/security-ou/scp.tf"><code>1-organization/security-ou/scp.tf</code></a>で設定する。許可リージョンと除外ロールは<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>1-organization/variables.tf</code></a>で指定する</p>
 
         <h3>除外ロール</h3>
-        <p>既定は<code>OrganizationAccountAccessRole</code>です。<code>2-foundation/</code>から、各アカウントのセキュリティサービスやログ保管用S3バケットを設定するために除外しています。ログの削除だけは除外ロールにも許可せず、古いログはS3のライフサイクルルールで削除します。</p>
+        <p>既定は<code>OrganizationAccountAccessRole</code>です。<code>2-account-baseline/</code>から、各アカウントのセキュリティサービスやログ保管用S3バケットを設定するために除外しています。ログの削除だけは除外ロールにも許可せず、古いログはS3のライフサイクルルールで削除します。</p>
       </section>
 
       <section aria-labelledby="notes">

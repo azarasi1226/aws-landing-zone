@@ -1,11 +1,11 @@
 # AWS Landing Zone
 
-AWS Organizationsの構成（OU、アカウント、SCP）と、IAM Identity Centerによる各アカウントへのアクセス、各アカウント内の共通リソース（ログ基盤、セキュリティ監視、アカウントベースラインなど）を管理するリポジトリです。
+AWS Organizationsの構成（OU、アカウント、SCP）と、IAM Identity Centerによる各アカウントへのアクセス、各アカウント内の共通リソース（ログ基盤、セキュリティ監視、ガバナンスなど）を管理するリポジトリです。
 
 [📚 ドキュメントサイト](https://azarasi1226.github.io/aws-landing-zone/)
 
 - `1-organization/`：組織の構成とアクセス管理
-- `2-foundation/`：各アカウント内の共通リソース
+- `2-account-baseline/`：各アカウント内の共通リソース
 
 ## 目的
 
@@ -68,7 +68,7 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
 │   │   └── main.tf          # OUとtest、development、productionアカウントの作成
 │   └── modules/
 │       └── scp/             # SCPの定義と適用
-└── 2-foundation/            # entrypoint：managementで実行し、各アカウントのロールに切り替える
+└── 2-account-baseline/      # entrypoint：managementで実行し、各アカウントのロールに切り替える
     ├── providers.tf         # アカウントごとのprovider
     ├── log_archive.tf       # ログ保管用S3バケット（log-archive）。Config・CloudTrailで共用
     ├── config.tf            # Configのレコーダー（全アカウント）、アグリゲーター・組織ルール（audit）
@@ -78,7 +78,7 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
         └── config-recorder/ # 1アカウント分のConfigのレコーダー
 ```
 
-`1-organization/`と`2-foundation/`は、それぞれ別のstateを持ちます。初回は`1-organization/`、`2-foundation/`の順にapplyします。
+`1-organization/`と`2-account-baseline/`は、それぞれ別のstateを持ちます。初回は`1-organization/`、`2-account-baseline/`の順にapplyします。
 
 分けている理由と、各アカウントへの入り方は[Terraformの構成のドキュメント](https://azarasi1226.github.io/aws-landing-zone/terraform.html)にまとめています。
 
@@ -97,12 +97,12 @@ terraform plan
 terraform apply
 ```
 
-`2-foundation/`も、同じ手順で実行します（`terraform.tfvars`は不要）。
+`2-account-baseline/`も、同じ手順で実行します（`terraform.tfvars`は不要）。
 
 ### アカウント追加時の手順
 
 1. `1-organization/`でアカウントを追加してapplyする
-2. `2-foundation/`の`providers.tf`と`config.tf`に、追加したアカウントのproviderとConfigのレコーダーを追加してapplyする
+2. `2-account-baseline/`の`providers.tf`と`config.tf`に、追加したアカウントのproviderとConfigのレコーダーを追加してapplyする
 
 ### 既存リソースのTerraform移行
 

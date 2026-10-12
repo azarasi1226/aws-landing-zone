@@ -52,7 +52,7 @@
             <tr><th scope="row"><code>Project</code></th><td>自由（付いていればよい）</td><td>Terraformで作るリソースには<code>default_tags</code>で付く（このリポジトリでは<code>landing-zone</code>）。手作業で作ったリソースには手で付ける</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/variables.tf"><code>2-foundation/variables.tf</code></a>の<code>required_tags</code>で設定する。このリポジトリの<code>default_tags</code>には、必須タグのほかに<code>Repository</code>も付けている</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/variables.tf"><code>2-account-baseline/variables.tf</code></a>の<code>required_tags</code>で設定する。このリポジトリの<code>default_tags</code>には、必須タグのほかに<code>Repository</code>も付けている</p>
       </section>
 
       <section aria-labelledby="no-enforcement">
@@ -74,7 +74,7 @@
         <h3>必須タグの追加・変更</h3>
         <ol>
           <li>各ディレクトリの<code>default_tags</code>に新しいタグを追加してapplyし、既存のリソースにタグを付ける</li>
-          <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/variables.tf"><code>2-foundation/variables.tf</code></a>の<code>required_tags</code>を変更してapplyする</li>
+          <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/variables.tf"><code>2-account-baseline/variables.tf</code></a>の<code>required_tags</code>を変更してapplyする</li>
           <li>手作業で作ったリソースの違反を確認し、タグを付ける</li>
         </ol>
         <p>先にルールを変えると、タグを付け終わるまで全リソースが違反として検知されるため、タグを付けてからルールを変えます。</p>

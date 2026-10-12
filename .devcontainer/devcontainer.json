@@ -2,7 +2,7 @@
   "name": "aws-landing-zone",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
-    // Terraformのバージョンは 1-organization/versions.tf、2-foundation/versions.tf の required_version と合わせる
+    // Terraformのバージョンは 1-organization/versions.tf、2-account-baseline/versions.tf の required_version と合わせる
     "ghcr.io/devcontainers/features/terraform:1": {
       "version": "1.16.5",
       "tflint": "none",

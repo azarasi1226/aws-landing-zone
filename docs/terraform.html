@@ -39,32 +39,32 @@
     <main class="content">
       <section aria-labelledby="structure">
         <h2 id="structure">ディレクトリと実行単位</h2>
-        <p><strong>Terraformの実行単位（state）は<code>1-organization/</code>と<code>2-foundation/</code>の2つです。どちらもmanagementの認証情報で実行し、apply は<code>1-organization/</code>、<code>2-foundation/</code>の順に1回ずつ行います。</strong></p>
+        <p><strong>Terraformの実行単位（state）は<code>1-organization/</code>と<code>2-account-baseline/</code>の2つです。どちらもmanagementの認証情報で実行し、apply は<code>1-organization/</code>、<code>2-account-baseline/</code>の順に1回ずつ行います。</strong></p>
         <table>
           <thead><tr><th scope="col">ディレクトリ</th><th scope="col">作るもの</th><th scope="col">操作するアカウント</th></tr></thead>
           <tbody>
             <tr><th scope="row"><code>1-organization/</code></th><td>組織、OU、アカウント、<a href="scp.html">SCP</a>、<a href="iam-identity-center.html">IAM Identity Center</a>、委任管理者の登録</td><td>management</td></tr>
-            <tr><th scope="row"><code>2-foundation/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール、<a href="cloudtrail.html">CloudTrail</a>の組織の証跡と調査用のAthena</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
+            <tr><th scope="row"><code>2-account-baseline/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール、<a href="cloudtrail.html">CloudTrail</a>の組織の証跡と調査用のAthena</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
           </tbody>
         </table>
       </section>
 
       <section aria-labelledby="auth">
         <h2 id="auth">各アカウントへの入り方</h2>
-        <p><code>2-foundation/</code>は、managementの認証情報から各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作します。用意する認証情報は、managementの1つだけです。</p>
+        <p><code>2-account-baseline/</code>は、managementの認証情報から各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作します。用意する認証情報は、managementの1つだけです。</p>
         <table>
           <thead><tr><th scope="col">provider</th><th scope="col">操作するアカウント</th></tr></thead>
           <tbody>
-            <tr><th scope="row"><code>aws</code>（デフォルト）</th><td>managementのまま操作する（アカウントIDの参照、management自身のConfig）</td></tr>
+            <tr><th scope="row"><code>aws</code>（デフォルト）</th><td>managementのまま操作する（アカウントIDの参照、management自身のConfig、CloudTrailの組織の証跡）</td></tr>
             <tr><th scope="row"><code>aws.log_archive</code>、<code>aws.audit</code>など</th><td>各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作する</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/providers.tf"><code>2-foundation/providers.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/providers.tf"><code>2-account-baseline/providers.tf</code></a>で設定する</p>
         <p><code>OrganizationAccountAccessRole</code>は、Organizationsでアカウントを作成したときに自動で作られるロールです。そのアカウントの管理者権限（<code>AdministratorAccess</code>）を持ち、<a href="scp.html">SCPの一部の禁止</a>からも除外しています。managementで<code>sts:AssumeRole</code>を許可された人は、全アカウントでこの権限を使えます。</p>
       </section>
 
       <section aria-labelledby="why-split">
-        <h2 id="why-split">1-organization/と2-foundation/を分けている理由</h2>
+        <h2 id="why-split">1-organization/と2-account-baseline/を分けている理由</h2>
         <p>どちらもmanagementの認証情報で実行するため、分けてもセキュリティ上の境界にはなりません。分けているのは、次の2つの理由からです。</p>
 
         <h3>新しく作ったアカウントには、同じapplyの中でproviderから入れない</h3>
@@ -77,12 +77,12 @@
             <tr><td>アカウントを作り、同じapplyでそのアカウントに入る</td><td>できない</td></tr>
           </tbody>
         </table>
-        <p>1つのstateにまとめると、アカウントを追加するたびに<code>-target</code>でアカウントだけを先に作る手順が必要になります。また、作成直後のアカウントは<code>OrganizationAccountAccessRole</code>がすぐには使えないことがあります。分けておけば、<code>1-organization/</code>、<code>2-foundation/</code>の順にapplyする普段の流れのままアカウントを追加できます。</p>
+        <p>1つのstateにまとめると、アカウントを追加するたびに<code>-target</code>でアカウントだけを先に作る手順が必要になります。また、作成直後のアカウントは<code>OrganizationAccountAccessRole</code>がすぐには使えないことがあります。分けておけば、<code>1-organization/</code>、<code>2-account-baseline/</code>の順にapplyする普段の流れのままアカウントを追加できます。</p>
 
         <h3>変更の影響範囲を小さくする</h3>
         <p>Configなどアカウント内の設定を変えるときに、組織・アカウント・SCPまでplanの対象にしないためです。</p>
 
-        <h3>2-foundation/の中は1つにまとめている</h3>
+        <h3>2-account-baseline/の中は1つにまとめている</h3>
         <p>ログのバケットと、それを使うConfig・CloudTrailは、一緒に変更することが多く、作る順番もTerraformが依存関係から自動で決められるため、1つのstateにまとめています。</p>
       </section>
 
@@ -90,12 +90,12 @@
         <h2 id="operations">運用手順</h2>
 
         <h3>applyの順番</h3>
-        <p><code>1-organization/</code>、<code>2-foundation/</code>の順にapplyします。<code>2-foundation/</code>は、<code>1-organization/</code>で作ったアカウントと、auditの<a href="organizations.html">委任管理者</a>の登録を前提にしているためです。<code>2-foundation/</code>の中の順番（ログのバケット → Configのレコーダー・CloudTrailの証跡 → 集約・組織ルール）は、Terraformが依存関係から自動で決めます。</p>
+        <p><code>1-organization/</code>、<code>2-account-baseline/</code>の順にapplyします。<code>2-account-baseline/</code>は、<code>1-organization/</code>で作ったアカウントと、auditの<a href="organizations.html">委任管理者</a>の登録を前提にしているためです。<code>2-account-baseline/</code>の中の順番（ログのバケット → Configのレコーダー・CloudTrailの証跡 → 集約・組織ルール）は、Terraformが依存関係から自動で決めます。</p>
 
         <h3>アカウントの追加</h3>
         <ol>
           <li><code>1-organization/</code>にアカウントを追加してapplyする（<a href="organizations.html">AWS Organizations</a>を参照）</li>
-          <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/providers.tf"><code>2-foundation/providers.tf</code></a>に追加したアカウントのproviderを、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/config.tf"><code>2-foundation/config.tf</code></a>にConfigのレコーダー（<code>modules/config-recorder</code>の呼び出し）を追加してapplyする。ログのバケットポリシーと組織ルールは、組織内のアカウントが自動で対象になる</li>
+          <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/providers.tf"><code>2-account-baseline/providers.tf</code></a>に追加したアカウントのproviderを、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/config.tf"><code>2-account-baseline/config.tf</code></a>にConfigのレコーダー（<code>modules/config-recorder</code>の呼び出し）を追加してapplyする。ログのバケットポリシーと組織ルールは、組織内のアカウントが自動で対象になる</li>
         </ol>
       </section>
 
@@ -103,7 +103,7 @@
         <h2 id="notes">注意点</h2>
         <ul>
           <li><strong>managementの強い権限があれば、全アカウントの管理者になれる。managementにアクセスできるユーザーとロールを最小限に絞る</strong></li>
-          <li>Organizationsへの招待で参加したアカウントには、<code>OrganizationAccountAccessRole</code>が自動では作られない。その場合は、<code>2-foundation/</code>をapplyする前にアカウント側で作成する</li>
+          <li>Organizationsへの招待で参加したアカウントには、<code>OrganizationAccountAccessRole</code>が自動では作られない。その場合は、<code>2-account-baseline/</code>をapplyする前にアカウント側で作成する</li>
         </ul>
       </section>
     </main>

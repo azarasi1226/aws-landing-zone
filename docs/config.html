@@ -43,10 +43,10 @@
         <table>
           <thead><tr><th scope="col">もの</th><th scope="col">役割</th><th scope="col">場所</th><th scope="col">管理する場所</th></tr></thead>
           <tbody>
-            <tr><th scope="row">レコーダー</th><td>リソースの設定と変更履歴を記録する</td><td>全アカウント × <code>ap-northeast-1</code>、<code>us-east-1</code></td><td><code>2-foundation/config.tf</code></td></tr>
-            <tr><th scope="row">保存先のS3バケット</th><td>記録した設定の履歴・スナップショットを保管する</td><td>log-archive</td><td><code>2-foundation/log_archive.tf</code></td></tr>
-            <tr><th scope="row">アグリゲーター</th><td>全アカウント・許可リージョンの記録と評価結果を1か所で見られるようにする</td><td>audit</td><td><code>2-foundation/config.tf</code></td></tr>
-            <tr><th scope="row">組織ルール</th><td>auditで定義したルールを、全アカウントに展開して評価する</td><td>audit（全アカウントに展開）</td><td><code>2-foundation/config.tf</code></td></tr>
+            <tr><th scope="row">レコーダー</th><td>リソースの設定と変更履歴を記録する</td><td>全アカウント × <code>ap-northeast-1</code>、<code>us-east-1</code></td><td><code>2-account-baseline/config.tf</code></td></tr>
+            <tr><th scope="row">保存先のS3バケット</th><td>記録した設定の履歴・スナップショットを保管する</td><td>log-archive</td><td><code>2-account-baseline/log_archive.tf</code></td></tr>
+            <tr><th scope="row">アグリゲーター</th><td>全アカウント・許可リージョンの記録と評価結果を1か所で見られるようにする</td><td>audit</td><td><code>2-account-baseline/config.tf</code></td></tr>
+            <tr><th scope="row">組織ルール</th><td>auditで定義したルールを、全アカウントに展開して評価する</td><td>audit（全アカウントに展開）</td><td><code>2-account-baseline/config.tf</code></td></tr>
           </tbody>
         </table>
       </section>
@@ -61,7 +61,7 @@
           <li>Configのサービスリンクロール（<code>AWSServiceRoleForConfig</code>）で動かす</li>
           <li><code>us-east-1</code>の記録も、<code>ap-northeast-1</code>にある保存先のバケットに送る</li>
         </ul>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/modules/config-recorder/main.tf"><code>2-foundation/modules/config-recorder</code></a>を、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/config.tf"><code>2-foundation/config.tf</code></a>でアカウントごとに呼び出す</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/modules/config-recorder/main.tf"><code>2-account-baseline/modules/config-recorder</code></a>を、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/config.tf"><code>2-account-baseline/config.tf</code></a>でアカウントごとに呼び出す</p>
 
         <h3>保存先のS3バケット</h3>
         <table>
@@ -73,7 +73,7 @@
             <tr><th scope="row">保護</th><td>パブリックアクセスをすべてブロックし、ACLは無効。暗号化（SSE-S3）とバージョニングを有効にする</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/log_archive.tf"><code>2-foundation/log_archive.tf</code></a>で作成する。名前に<code>log-archive</code>を含むため、<a href="scp.html">security OUのSCP</a>で削除と設定変更から保護される</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/log_archive.tf"><code>2-account-baseline/log_archive.tf</code></a>で作成する。名前に<code>log-archive</code>を含むため、<a href="scp.html">security OUのSCP</a>で削除と設定変更から保護される</p>
 
         <h3>アグリゲーター</h3>
         <p>auditアカウントに<code>organization</code>という名前で作成し、組織内の全アカウントの<code>ap-northeast-1</code>と<code>us-east-1</code>を集約します。組織の情報を読むためのIAMロール（<code>config-organization-aggregator</code>）を使います。</p>
@@ -85,7 +85,7 @@
             <tr><th scope="row"><code>required-tags</code></th><td>必須タグが付いていない、または値が違うリソース。詳しくは<a href="tagging.html">タグの方針</a>を参照</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/config.tf"><code>2-foundation/config.tf</code></a>で、リージョンごとに作成する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/config.tf"><code>2-account-baseline/config.tf</code></a>で、リージョンごとに作成する</p>
       </section>
 
       <section aria-labelledby="operations">

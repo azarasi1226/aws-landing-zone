@@ -96,7 +96,7 @@
             <tr><th scope="row">production</th><td>workload</td><td>本番環境のワークロード</td><td>-</td></tr>
           </tbody>
         </table>
-        <p>各アカウント内のリソース（ログ基盤、セキュリティ監視、アカウントベースラインなど）は、このリポジトリの<code>2-foundation/</code>で作成します。<code>1-organization/</code>が作るのはアカウントとOUまでです。</p>
+        <p>各アカウント内のリソース（ログ基盤、セキュリティ監視、ガバナンスなど）は、このリポジトリの<code>2-account-baseline/</code>で作成します。<code>1-organization/</code>が作るのはアカウントとOUまでです。</p>
       </section>
 
       <section aria-labelledby="configuration">
@@ -128,7 +128,7 @@
         <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>1-organization/variables.tf</code></a>で設定する</p>
 
         <h3>委任管理者</h3>
-        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、<code>2-foundation/</code>からauditアカウントで行います（現在はConfigのみ。GuardDuty・Security Hubは予定）。</p>
+        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、<code>2-account-baseline/</code>からauditアカウントで行います（現在はConfigのみ。GuardDuty・Security Hubは予定）。</p>
         <table>
           <thead><tr><th scope="col">サービス</th><th scope="col">どんなサービスか</th><th scope="col" class="nowrap">登録単位</th></tr></thead>
           <tbody>
@@ -145,7 +145,7 @@
         <h3>アカウントの追加</h3>
         <ol>
           <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/security-ou/main.tf"><code>1-organization/security-ou/main.tf</code></a>または<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/workload-ou/main.tf"><code>1-organization/workload-ou/main.tf</code></a>にアカウントを追加し、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>account_emails</code></a>にメールアドレスを設定する</li>
-          <li><code>2-foundation/</code>に追加したアカウントのproviderとConfigのレコーダーを追加してapplyする（<a href="terraform.html#operations">Terraformの構成</a>を参照）</li>
+          <li><code>2-account-baseline/</code>に追加したアカウントのproviderとConfigのレコーダーを追加してapplyする（<a href="terraform.html#operations">Terraformの構成</a>を参照）</li>
           <li>必要に応じて<a href="iam-identity-center.html">IAM Identity Center</a>のグループに新しいアカウントを割り当てる</li>
         </ol>
         <details class="once">

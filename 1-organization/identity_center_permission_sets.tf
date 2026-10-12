@@ -59,7 +59,7 @@ locals {
         "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
       ]
       # auditのAthenaでCloudTrailのログを調査できるようにする
-      # 対象のリソースは 2-foundation/cloudtrail.tf で作るものだけに絞る（名前を合わせる）
+      # 対象のリソースは 2-account-baseline/cloudtrail.tf で作るものだけに絞る（名前を合わせる）
       inline_policy = jsonencode({
         Version = "2012-10-17"
         Statement = [
@@ -143,7 +143,7 @@ locals {
     }
   }
 
-  # 2-foundation/cloudtrail.tf で作る、CloudTrailのログの調査に使うリソースの名前
+  # 2-account-baseline/cloudtrail.tf で作る、CloudTrailのログの調査に使うリソースの名前
   cloudtrail_investigation = {
     audit_account_id = local.account_ids["audit"]
     log_bucket       = "log-archive-${local.account_ids["log-archive"]}"

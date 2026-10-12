@@ -67,6 +67,7 @@ data "aws_iam_policy_document" "guardrails" {
 }
 
 # グローバルサービスを除き、許可リージョン以外の操作を禁止する
+# not_actions には、リージョンを持たないグローバルサービスと、認証に使うSTSだけを並べる（KMSやConfigなどリージョンごとのサービスは入れない）
 data "aws_iam_policy_document" "region_restriction" {
   statement {
     sid    = "DenyOutsideAllowedRegions"
@@ -74,7 +75,6 @@ data "aws_iam_policy_document" "region_restriction" {
     not_actions = [
       "a4b:*",
       "account:*",
-      "acm:*",
       "aws-marketplace-management:*",
       "aws-marketplace:*",
       "aws-portal:*",
@@ -83,7 +83,6 @@ data "aws_iam_policy_document" "region_restriction" {
       "ce:*",
       "chime:*",
       "cloudfront:*",
-      "config:*",
       "cur:*",
       "directconnect:*",
       "ec2:DescribeRegions",
@@ -97,7 +96,6 @@ data "aws_iam_policy_document" "region_restriction" {
       "identitystore:*",
       "importexport:*",
       "invoicing:*",
-      "kms:*",
       "networkmanager:*",
       "organizations:*",
       "payments:*",
@@ -131,7 +129,6 @@ data "aws_iam_policy_document" "region_restriction" {
       "supportplans:*",
       "tax:*",
       "trustedadvisor:*",
-      "waf-regional:*",
       "waf:*",
       "wafv2:*",
       "wellarchitected:*",

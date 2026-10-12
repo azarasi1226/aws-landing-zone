@@ -1,5 +1,5 @@
 locals {
-  # ログ保管用S3バケット。2-foundation/log_archive.tf では名前に「log-archive」を含めて作成する
+  # ログ保管用S3バケット。2-account-baseline/log_archive.tf では名前に「log-archive」を含めて作成する
   log_bucket_arns = ["arn:aws:s3:::*log-archive*"]
 }
 
