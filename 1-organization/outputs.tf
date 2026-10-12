@@ -17,6 +17,6 @@ output "ou_ids" {
 }
 
 output "account_ids" {
-  description = "アカウントID。aws-foundationリポジトリの変数に渡す"
+  description = "アカウントID"
   value       = local.account_ids
 }

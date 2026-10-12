@@ -153,7 +153,7 @@ data "aws_iam_policy_document" "region_restriction" {
 }
 
 module "scp_guardrails" {
-  source = "../modules/scp"
+  source = "./modules/scp"
 
   name        = "guardrails"
   description = "組織からの離脱、rootユーザーの利用、IAMユーザーの作成、セキュリティサービスの停止を禁止する"
@@ -164,7 +164,7 @@ module "scp_guardrails" {
 }
 
 module "scp_region_restriction" {
-  source = "../modules/scp"
+  source = "./modules/scp"
 
   name        = "region-restriction"
   description = "許可リージョン以外の利用を禁止する"

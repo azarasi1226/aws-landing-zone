@@ -5,13 +5,3 @@ account_emails = {
   development = "aws+development@example.com"
   production  = "aws+production@example.com"
 }
-
-allowed_regions  = ["ap-northeast-1", "us-east-1"]
-security_regions = ["ap-northeast-1"]
-
-tag_rules = {
-  Project = {}
-  ManagedBy = {
-    values = ["terraform", "manual"]
-  }
-}

@@ -1,12 +1,11 @@
 # 既存の組織をimportして管理する
 resource "aws_organizations_organization" "this" {
-  # すべての機能。一括請求のみ（CONSOLIDATED_BILLING）では、SCP、タグポリシー、信頼されたアクセスが使えない
+  # すべての機能。一括請求のみ（CONSOLIDATED_BILLING）では、SCP、信頼されたアクセスが使えない
   feature_set                   = "ALL"
   aws_service_access_principals = var.aws_service_access_principals
 
   enabled_policy_types = [
     "SERVICE_CONTROL_POLICY",
-    "TAG_POLICY",
   ]
 
   lifecycle {
@@ -51,7 +50,7 @@ module "workload_ou" {
 # ------------------------------------------------------------
 # 委任管理者
 # 本来managementでしか行えない「組織全体を対象にしたサービスの管理」をauditに任せる。
-# 各サービスの組織全体での有効化や設定は、aws-foundationからauditで行う
+# 各サービスの組織全体での有効化や設定は、2-foundation/ からauditで行う
 # ------------------------------------------------------------
 
 # GuardDuty：全アカウントの脅威検知の有効化と、検出結果の集約をauditで行う。リージョンごとに登録が必要

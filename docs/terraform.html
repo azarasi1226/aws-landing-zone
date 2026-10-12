@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
-  <title>Terraformの構成 | AWS Organization</title>
+  <title>Terraformの構成 | AWS Landing Zone</title>
   <style>
     :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.site-header{padding:2.75rem max(1.25rem,calc((100% - 88rem)/2)) 2.25rem;color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.site-header h1{margin:0;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.2}.site-header p:last-child{max-width:720px;margin:.8rem 0 0;color:#e0f2fe}.layout{display:grid;grid-template-columns:12rem minmax(0,1fr);gap:1.5rem;width:min(90rem,100%);margin:2rem auto;padding:0 1.25rem}.sidebar{position:sticky;top:1.25rem;align-self:start;padding:1rem;border:1px solid #dbe5f0;border-radius:12px;background:#fff}.sidebar h2{margin:0 0 .65rem;color:#52657a;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar ul{display:grid;gap:.2rem;margin:0;padding:0;list-style:none}.sidebar a{display:block;padding:.45rem .6rem;border-radius:7px;color:#334e68;text-decoration:none}.sidebar a:hover,.sidebar a[aria-current=page]{color:#075985;background:#eaf6ff}.content{min-width:0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #dbe5f0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgb(16 42 67 / 6%)}.content h2{margin:2.2rem 0 .8rem;padding-bottom:.45rem;border-bottom:1px solid #e3ebf3;color:#123b5d;font-size:1.35rem}.content h2:first-child{margin-top:0}.content h3{margin:1.65rem 0 .55rem;color:#245b7a;font-size:1.08rem}.content p,.content ul,.content ol{margin-top:.65rem;margin-bottom:.9rem}.content li+li{margin-top:.25rem}.content table{width:100%;margin:1rem 0 1.35rem;border-collapse:collapse;font-size:.94rem}.content th,.content td{padding:.7rem .8rem;border:1px solid #dbe5f0;text-align:left;vertical-align:top}.content th{color:#163b59;background:#edf5fb;font-weight:700}.content code{padding:.12em .35em;border:1px solid #e2e8f0;border-radius:4px;background:#f5f7fa;font-family:Consolas,"Cascadia Code",monospace;font-size:.9em;overflow-wrap:anywhere}.content blockquote{margin:1rem 0;padding:.75rem 1rem;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;background:#effaff}.content blockquote p{margin:0}.site-footer{width:min(90rem,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:60em){.layout{grid-template-columns:1fr;gap:1rem;margin-top:1rem}.sidebar{position:static}.sidebar ul{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.content{padding:1.25rem}.content table{display:block;overflow-x:auto}}
   .content tbody th{white-space:nowrap}.content .table-note{margin:-.8rem 0 1.35rem;color:#52657a;font-size:.86rem}
@@ -26,25 +26,25 @@
         <li><a href="config.html">AWS Config</a></li>
         <li><a href="tagging.html">タグの方針</a></li>
         <li><a href="terraform.html" aria-current="page">Terraformの構成</a></li>
-        <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-organization" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
+        <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
       </ul>
     </nav>
     <main class="content">
       <section aria-labelledby="structure">
         <h2 id="structure">ディレクトリと実行単位</h2>
-        <p><strong>Terraformの実行単位（state）は<code>organization/</code>と<code>foundation/</code>の2つです。どちらもmanagementの認証情報で実行し、apply は<code>organization/</code>、<code>foundation/</code>の順に1回ずつ行います。</strong></p>
+        <p><strong>Terraformの実行単位（state）は<code>1-organization/</code>と<code>2-foundation/</code>の2つです。どちらもmanagementの認証情報で実行し、apply は<code>1-organization/</code>、<code>2-foundation/</code>の順に1回ずつ行います。</strong></p>
         <table>
           <thead><tr><th scope="col">ディレクトリ</th><th scope="col">作るもの</th><th scope="col">操作するアカウント</th></tr></thead>
           <tbody>
-            <tr><th scope="row"><code>organization/</code></th><td>組織、OU、アカウント、<a href="scp.html">SCP</a>、<a href="iam-identity-center.html">IAM Identity Center</a>、委任管理者の登録</td><td>management</td></tr>
-            <tr><th scope="row"><code>foundation/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
+            <tr><th scope="row"><code>1-organization/</code></th><td>組織、OU、アカウント、<a href="scp.html">SCP</a>、<a href="iam-identity-center.html">IAM Identity Center</a>、委任管理者の登録</td><td>management</td></tr>
+            <tr><th scope="row"><code>2-foundation/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
           </tbody>
         </table>
       </section>
 
       <section aria-labelledby="auth">
         <h2 id="auth">各アカウントへの入り方</h2>
-        <p><code>foundation/</code>は、managementの認証情報から各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作します。用意する認証情報は、managementの1つだけです。</p>
+        <p><code>2-foundation/</code>は、managementの認証情報から各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作します。用意する認証情報は、managementの1つだけです。</p>
         <table>
           <thead><tr><th scope="col">provider</th><th scope="col">操作するアカウント</th></tr></thead>
           <tbody>
@@ -52,12 +52,12 @@
             <tr><th scope="row"><code>aws.log_archive</code>、<code>aws.audit</code>など</th><td>各アカウントの<code>OrganizationAccountAccessRole</code>に切り替えて操作する</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/foundation/providers.tf"><code>foundation/providers.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/providers.tf"><code>2-foundation/providers.tf</code></a>で設定する</p>
         <p><code>OrganizationAccountAccessRole</code>は、Organizationsでアカウントを作成したときに自動で作られるロールです。そのアカウントの管理者権限（<code>AdministratorAccess</code>）を持ち、<a href="scp.html">SCPの一部の禁止</a>からも除外しています。managementで<code>sts:AssumeRole</code>を許可された人は、全アカウントでこの権限を使えます。</p>
       </section>
 
       <section aria-labelledby="why-split">
-        <h2 id="why-split">organization/とfoundation/を分けている理由</h2>
+        <h2 id="why-split">1-organization/と2-foundation/を分けている理由</h2>
         <p>どちらもmanagementの認証情報で実行するため、分けてもセキュリティ上の境界にはなりません。分けているのは、次の2つの理由からです。</p>
 
         <h3>新しく作ったアカウントには、同じapplyの中でproviderから入れない</h3>
@@ -70,22 +70,25 @@
             <tr><td>アカウントを作り、同じapplyでそのアカウントに入る</td><td>できない</td></tr>
           </tbody>
         </table>
-        <p>1つのstateにまとめると、アカウントを追加するたびに<code>-target</code>でアカウントだけを先に作る手順が必要になります。また、作成直後のアカウントは<code>OrganizationAccountAccessRole</code>がすぐには使えないことがあります。分けておけば、<code>organization/</code>、<code>foundation/</code>の順にapplyする普段の流れのままアカウントを追加できます。</p>
+        <p>1つのstateにまとめると、アカウントを追加するたびに<code>-target</code>でアカウントだけを先に作る手順が必要になります。また、作成直後のアカウントは<code>OrganizationAccountAccessRole</code>がすぐには使えないことがあります。分けておけば、<code>1-organization/</code>、<code>2-foundation/</code>の順にapplyする普段の流れのままアカウントを追加できます。</p>
 
         <h3>変更の影響範囲を小さくする</h3>
         <p>Configなどアカウント内の設定を変えるときに、組織・アカウント・SCPまでplanの対象にしないためです。</p>
 
-        <h3>foundation/の中は1つにまとめている</h3>
+        <h3>2-foundation/の中は1つにまとめている</h3>
         <p>ログのバケット、Configのレコーダー、集約と組織ルールは、一緒に変更することが多く、作る順番もTerraformが依存関係から自動で決められるため、1つのstateにまとめています。</p>
       </section>
 
       <section aria-labelledby="operations">
         <h2 id="operations">運用手順</h2>
 
+        <h3>applyの順番</h3>
+        <p><code>1-organization/</code>、<code>2-foundation/</code>の順にapplyします。<code>2-foundation/</code>は、<code>1-organization/</code>で作ったアカウントと、auditの<a href="organizations.html">委任管理者</a>の登録を前提にしているためです。<code>2-foundation/</code>の中の順番（ログのバケット → Configのレコーダー → 集約・組織ルール）は、Terraformが依存関係から自動で決めます。</p>
+
         <h3>アカウントの追加</h3>
         <ol>
-          <li><code>organization/</code>にアカウントを追加してapplyする（<a href="organizations.html">AWS Organizations</a>を参照）</li>
-          <li><code>foundation/</code>の<code>providers.tf</code>と<code>config.tf</code>に、追加したアカウントのproviderとConfigのレコーダーを追加してapplyする（<a href="config.html">AWS Config</a>を参照）</li>
+          <li><code>1-organization/</code>にアカウントを追加してapplyする（<a href="organizations.html">AWS Organizations</a>を参照）</li>
+          <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/providers.tf"><code>2-foundation/providers.tf</code></a>に追加したアカウントのproviderを、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/config.tf"><code>2-foundation/config.tf</code></a>にConfigのレコーダー（<code>modules/config-recorder</code>の呼び出し）を追加してapplyする。ログのバケットポリシーと組織ルールは、組織内のアカウントが自動で対象になる</li>
         </ol>
       </section>
 
@@ -93,7 +96,7 @@
         <h2 id="notes">注意点</h2>
         <ul>
           <li><strong>managementの強い権限があれば、全アカウントの管理者になれる。managementにアクセスできるユーザーとロールを最小限に絞る</strong></li>
-          <li>Organizationsへの招待で参加したアカウントには、<code>OrganizationAccountAccessRole</code>が自動では作られない。その場合は、<code>foundation/</code>をapplyする前にアカウント側で作成する</li>
+          <li>Organizationsへの招待で参加したアカウントには、<code>OrganizationAccountAccessRole</code>が自動では作られない。その場合は、<code>2-foundation/</code>をapplyする前にアカウント側で作成する</li>
         </ul>
       </section>
     </main>

@@ -9,7 +9,8 @@ variable "default_tags" {
   type        = map(string)
   default = {
     ManagedBy  = "terraform"
-    Repository = "aws-organization"
+    Project    = "landing-zone"
+    Repository = "aws-landing-zone"
   }
 }
 
@@ -28,7 +29,6 @@ variable "aws_service_access_principals" {
     "malware-protection.guardduty.amazonaws.com", # GuardDutyのマルウェア保護
     "securityhub.amazonaws.com",                  # 全アカウントの検出結果をauditに集約する
     "sso.amazonaws.com",                          # IAM Identity Centerで全アカウントにアクセスする
-    "tagpolicies.tag.amazonaws.com",              # タグポリシー
   ]
 }
 
@@ -60,24 +60,7 @@ variable "allowed_regions" {
 }
 
 variable "scp_exempt_role_names" {
-  description = "SCPの一部の禁止（セキュリティサービスの設定変更、リージョン制限、security OUのログバケット設定変更など）から除外するIAMロール名（aws-foundationの実行ロールなど）"
+  description = "SCPの一部の禁止（セキュリティサービスの設定変更、リージョン制限、security OUのログバケット設定変更など）から除外するIAMロール名（2-foundation/ の実行ロールなど）"
   type        = list(string)
   default     = ["OrganizationAccountAccessRole"]
-}
-
-# ------------------------------------------------------------
-# タグ
-# ------------------------------------------------------------
-
-variable "tag_rules" {
-  description = <<-EOT
-    タグのルール。キーはタグのキー名（大文字・小文字を含めて統一する表記）
-    - values：許可する値。省略時は値を制限しない
-    - enforced_for：values に合わないタグ付けを拒否するリソースの種類（例：ec2:ALL_SUPPORTED）
-  EOT
-  type = map(object({
-    values       = optional(list(string))
-    enforced_for = optional(list(string), [])
-  }))
-  default = {}
 }

@@ -1,5 +1,5 @@
 locals {
-  # ログ保管用S3バケット。aws-foundationでは名前に「log-archive」を含めて作成する
+  # ログ保管用S3バケット。2-foundation/log_archive.tf では名前に「log-archive」を含めて作成する
   log_bucket_arns = ["arn:aws:s3:::*log-archive*"]
 }
 
@@ -64,7 +64,7 @@ data "aws_iam_policy_document" "security_ou" {
 }
 
 module "scp_security_ou" {
-  source = "../../modules/scp"
+  source = "../modules/scp"
 
   name        = "security-ou"
   description = "ログ保管用S3バケットの削除・設定変更と、ワークロードの作成を禁止する"
