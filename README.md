@@ -39,6 +39,7 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
 | [SCP](https://azarasi1226.github.io/aws-landing-zone/scp.html) | 全アカウント | 全アカウント共通のガードレール |
 | [IAM Identity Center](https://azarasi1226.github.io/aws-landing-zone/iam-identity-center.html) | 全アカウント | グループ、許可セットと、各アカウントへの割り当て（ユーザーは手動管理） |
 | [AWS Config](https://azarasi1226.github.io/aws-landing-zone/config.html) | 全アカウント | 設定の記録（log-archiveに保管）、評価結果の集約と組織ルール（audit） |
+| [CloudTrail](https://azarasi1226.github.io/aws-landing-zone/cloudtrail.html) | 全アカウント | 操作ログの記録（組織の証跡、log-archiveに保管）、auditのAthenaで調査 |
 | [タグの方針](https://azarasi1226.github.io/aws-landing-zone/tagging.html) | 全アカウント | 必須タグを`default_tags`で付け、Configの`required-tags`ルールで漏れを検知 |
 
 ## Terraform構成
@@ -69,8 +70,9 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
 │       └── scp/             # SCPの定義と適用
 └── 2-foundation/            # entrypoint：managementで実行し、各アカウントのロールに切り替える
     ├── providers.tf         # アカウントごとのprovider
-    ├── log_archive.tf       # ログ保管用S3バケット（log-archive）
+    ├── log_archive.tf       # ログ保管用S3バケット（log-archive）。Config・CloudTrailで共用
     ├── config.tf            # Configのレコーダー（全アカウント）、アグリゲーター・組織ルール（audit）
+    ├── cloudtrail.tf        # CloudTrailの組織の証跡（management）、調査用のAthena（audit）
     └── modules/
         ├── accounts/        # アカウント名からアカウントIDを引く
         └── config-recorder/ # 1アカウント分のConfigのレコーダー

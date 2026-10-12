@@ -30,6 +30,7 @@
         <li><a href="iam-identity-center.html" aria-current="page">IAM Identity Center</a></li>
         <li class="nav-group">ログ・監査</li>
         <li><a href="config.html">AWS Config</a></li>
+        <li><a href="cloudtrail.html">CloudTrail</a></li>
         <li class="nav-group">このリポジトリについて</li>
         <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
@@ -71,7 +72,7 @@
             <tr><th scope="row">Admin</th><td>AdministratorAccess</td><td>すべての操作</td><td class="nowrap">1時間</td></tr>
             <tr><th scope="row">PowerUser</th><td>PowerUserAccess</td><td>IAM・Organizations・アカウント設定以外のすべての操作</td><td class="nowrap">4時間</td></tr>
             <tr><th scope="row">Observer</th><td>ViewOnlyAccess<br>＋ ログ・メトリクスの読み取り</td><td>リソースの閲覧と、障害調査のためのログ・メトリクスの読み取り。変更はできず、S3の中身などのデータは読めない</td><td class="nowrap">4時間</td></tr>
-            <tr><th scope="row">SecurityAudit</th><td>SecurityAudit<br>ViewOnlyAccess</td><td>セキュリティ設定とリソースの閲覧のみ。データは読めない</td><td class="nowrap">4時間</td></tr>
+            <tr><th scope="row">SecurityAudit</th><td>SecurityAudit<br>ViewOnlyAccess<br>＋ CloudTrailの操作ログの調査</td><td>セキュリティ設定とリソースの閲覧と、auditのAthenaでの<a href="cloudtrail.html">操作ログの調査</a>。それ以外のデータは読めない</td><td class="nowrap">4時間</td></tr>
           </tbody>
         </table>
         <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/identity_center_permission_sets.tf"><code>1-organization/identity_center_permission_sets.tf</code></a>で設定する</p>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>CloudTrail | AWS Landing Zone</title>
+  <style>
+    :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.site-header{padding:2.75rem max(1.25rem,calc((100% - 88rem)/2)) 2.25rem;color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.site-header h1{margin:0;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.2}.site-header p:last-child{max-width:720px;margin:.8rem 0 0;color:#e0f2fe}.layout{display:grid;grid-template-columns:12rem minmax(0,1fr);gap:1.5rem;width:min(90rem,100%);margin:2rem auto;padding:0 1.25rem}.sidebar{position:sticky;top:1.25rem;align-self:start;padding:1rem;border:1px solid #dbe5f0;border-radius:12px;background:#fff}.sidebar h2{margin:0 0 .65rem;color:#52657a;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar ul{display:grid;gap:.2rem;margin:0;padding:0;list-style:none}.sidebar a{display:block;padding:.45rem .6rem;border-radius:7px;color:#334e68;text-decoration:none}.sidebar a:hover,.sidebar a[aria-current=page]{color:#075985;background:#eaf6ff}.content{min-width:0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #dbe5f0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgb(16 42 67 / 6%)}.content h2{margin:2.2rem 0 .8rem;padding-bottom:.45rem;border-bottom:1px solid #e3ebf3;color:#123b5d;font-size:1.35rem}.content h2:first-child{margin-top:0}.content h3{margin:1.65rem 0 .55rem;color:#245b7a;font-size:1.08rem}.content p,.content ul,.content ol{margin-top:.65rem;margin-bottom:.9rem}.content li+li{margin-top:.25rem}.content table{width:100%;margin:1rem 0 1.35rem;border-collapse:collapse;font-size:.94rem}.content th,.content td{padding:.7rem .8rem;border:1px solid #dbe5f0;text-align:left;vertical-align:top}.content th{color:#163b59;background:#edf5fb;font-weight:700}.content code{padding:.12em .35em;border:1px solid #e2e8f0;border-radius:4px;background:#f5f7fa;font-family:Consolas,"Cascadia Code",monospace;font-size:.9em;overflow-wrap:anywhere}.content blockquote{margin:1rem 0;padding:.75rem 1rem;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;background:#effaff}.content blockquote p{margin:0}.site-footer{width:min(90rem,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:60em){.layout{grid-template-columns:1fr;gap:1rem;margin-top:1rem}.sidebar{position:static}.sidebar ul{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.content{padding:1.25rem}.content table{display:block;overflow-x:auto}}
+  .content tbody th{white-space:nowrap}.content .table-note{margin:-.8rem 0 1.35rem;color:#52657a;font-size:.86rem}
+  .content pre{margin:1rem 0 1.35rem;padding:1rem;border:1px solid #e2e8f0;border-radius:8px;background:#f5f7fa;overflow-x:auto;line-height:1.55}.content pre code{padding:0;border:0;background:none;overflow-wrap:normal}
+  .sidebar .nav-group{grid-column:1/-1;margin-top:.6rem;padding:.7rem .6rem .15rem;border-top:1px solid #e3ebf3;color:#123b5d;font-size:.82rem;font-weight:700;letter-spacing:.04em}.sidebar .nav-group~li:not(.sidebar-external)>a{padding-left:1.4rem;font-size:.94rem}
+  .sidebar-external{grid-column:1/-1;margin-top:.35rem;padding-top:.35rem;border-top:1px solid #dbe5f0}</style>
+</head>
+<body>
+  <header class="site-header">
+    <h1>CloudTrail</h1>
+    <p>全アカウントの操作ログの記録と、SQLによる調査。</p>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="ドキュメント">
+      <h2>ドキュメント</h2>
+      <ul>
+        <li><a href="index.html">ドキュメントトップ</a></li>
+        <li class="nav-group">アカウント設計</li>
+        <li><a href="organizations.html">AWS Organizations</a></li>
+        <li class="nav-group">ガバナンス</li>
+        <li><a href="scp.html">SCP</a></li>
+        <li><a href="tagging.html">タグの方針</a></li>
+        <li class="nav-group">ID・権限管理</li>
+        <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
+        <li class="nav-group">ログ・監査</li>
+        <li><a href="config.html">AWS Config</a></li>
+        <li><a href="cloudtrail.html" aria-current="page">CloudTrail</a></li>
+        <li class="nav-group">このリポジトリについて</li>
+        <li><a href="terraform.html">Terraformの構成</a></li>
+        <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
+      </ul>
+    </nav>
+    <main class="content">
+      <section aria-labelledby="structure">
+        <h2 id="structure">構成</h2>
+        <p><strong>managementの組織の証跡で全アカウント・全リージョンの操作を記録し、ログはlog-archiveに保管して、auditからAthenaのSQLで調査します。</strong></p>
+        <table>
+          <thead><tr><th scope="col">もの</th><th scope="col">役割</th><th scope="col">場所</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">組織の証跡</th><td>全アカウント・全リージョンの操作（誰が、いつ、何をしたか）を記録する</td><td>management</td></tr>
+            <tr><th scope="row">保存先のS3バケット</th><td>操作ログを保管する。<a href="config.html">AWS Config</a>と同じバケットの<code>cloudtrail/</code>以下</td><td>log-archive</td></tr>
+            <tr><th scope="row">Athena</th><td>保管したログを、SQLで検索する</td><td>audit</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">※ すべて<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-foundation/cloudtrail.tf"><code>2-foundation/cloudtrail.tf</code></a>で作成する</p>
+      </section>
+
+      <section aria-labelledby="configuration">
+        <h2 id="configuration">設定内容</h2>
+
+        <h3>組織の証跡</h3>
+        <ul>
+          <li>記録する操作：管理イベント（リソースの作成・変更・削除、サインインなど）。S3のオブジェクトの読み書きなどのデータイベントは、量と料金が大きいため記録しない</li>
+          <li>全リージョンを記録する。SCPで拒否された、許可リージョン以外での操作の試みも記録される</li>
+          <li>ログファイルの検証を有効にする。ログが改ざんされていないことを、ダイジェストファイルで確かめられる</li>
+          <li>保管期間は、<a href="config.html">AWS Config</a>の記録と同じ365日（<code>log_retention_days</code>）</li>
+        </ul>
+
+        <h3>Athena</h3>
+        <table>
+          <thead><tr><th scope="col">もの</th><th scope="col">名前</th><th scope="col">内容</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">ワークグループ</th><td><code>cloudtrail</code></td><td>調査用のワークグループ。クエリの結果は<code>athena-results-&lt;auditのアカウントID&gt;</code>バケットに保存され、30日で削除される</td></tr>
+            <tr><th scope="row">テーブル</th><td><code>cloudtrail.logs</code></td><td>log-archiveのバケットの操作ログを読むテーブル</td></tr>
+          </tbody>
+        </table>
+        <p>テーブルには、ログの保存場所に合わせて次の3つのパーティションがあります。<strong>検索するときは必ず<code>dt</code>（日付）で範囲を絞ります。</strong>絞らないと全期間のログを読むため、時間と料金がかかります。</p>
+        <table>
+          <thead><tr><th scope="col">パーティション</th><th scope="col">値の例</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>dt</code></th><td><code>2026/10/12</code>（日付。<code>yyyy/MM/dd</code>）</td></tr>
+            <tr><th scope="row"><code>account</code></th><td>アカウントID</td></tr>
+            <tr><th scope="row"><code>region</code></th><td><code>ap-northeast-1</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="operations">
+        <h2 id="operations">運用手順</h2>
+
+        <h3>操作ログの調査</h3>
+        <ol>
+          <li>auditアカウントに、SecurityAudit許可セット（security-auditorsグループ）またはAdmin許可セットでサインインする</li>
+          <li>Athenaのコンソールを開き、ワークグループ<code>cloudtrail</code>を選ぶ</li>
+          <li>クエリエディタでSQLを実行する</li>
+        </ol>
+
+        <h3>SQLの例</h3>
+        <p>特定のユーザーが行った変更（読み取り以外）：</p>
+<pre><code>SELECT eventtime, recipientaccountid, eventsource, eventname, awsregion, sourceipaddress
+FROM cloudtrail.logs
+WHERE dt BETWEEN '2026/10/01' AND '2026/10/12'
+  AND useridentity.arn LIKE '%yamada%'
+  AND readonly = 'false'
+ORDER BY eventtime DESC
+LIMIT 100;</code></pre>
+        <p>特定のリソースを削除したのは誰か：</p>
+<pre><code>SELECT eventtime, useridentity.arn, eventname, requestparameters
+FROM cloudtrail.logs
+WHERE dt &gt;= '2026/10/01'
+  AND eventname LIKE 'Delete%'
+  AND requestparameters LIKE '%my-bucket%'
+ORDER BY eventtime DESC;</code></pre>
+        <p>コンソールへのサインインの失敗：</p>
+<pre><code>SELECT eventtime, useridentity.arn, sourceipaddress, errormessage
+FROM cloudtrail.logs
+WHERE dt &gt;= '2026/10/01'
+  AND eventname = 'ConsoleLogin'
+  AND errormessage IS NOT NULL
+ORDER BY eventtime DESC;</code></pre>
+      </section>
+
+      <section aria-labelledby="notes">
+        <h2 id="notes">注意点</h2>
+        <ul>
+          <li><strong>Athenaは読み込んだデータの量に応じて課金される。必ず<code>dt</code>で日付を絞る</strong></li>
+          <li>ログがS3に届くまで、操作から5〜15分ほどかかる。直近の操作は、各アカウントのCloudTrailコンソールの「イベント履歴」（直近90日、そのアカウント・リージョンの分だけ）の方が早く確認できる</li>
+          <li>調査できるのは、auditにSecurityAuditまたはAdmin許可セットで入れる人だけ。SecurityAudit許可セットで読めるのは、操作ログと調査用のテーブル・クエリ結果だけ</li>
+          <li>保存先のバケットとログは、SCPにより誰も削除できない</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+  <footer class="site-footer"><a href="index.html">ドキュメントトップに戻る</a></footer>
+</body>
+</html>

@@ -30,6 +30,7 @@
         <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
         <li class="nav-group">ログ・監査</li>
         <li><a href="config.html">AWS Config</a></li>
+        <li><a href="cloudtrail.html">CloudTrail</a></li>
         <li class="nav-group">このリポジトリについて</li>
         <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
@@ -88,7 +89,7 @@
           <thead><tr><th scope="col">アカウント</th><th scope="col">OU</th><th scope="col">役割</th><th scope="col">主なサービス</th></tr></thead>
           <tbody>
             <tr><th scope="row">management</th><td>Root</td><td>Organizationsの構成管理、アカウントの作成・招待・削除、請求・予算・コスト管理、ルートユーザーの運用。アプリケーションやワークロードは配置しない</td><td>Organizations、IAM Identity Center、Billing</td></tr>
-            <tr><th scope="row">log-archive</th><td>security</td><td>全アカウントのログを集約し、改ざん・削除されないよう長期保管する</td><td>Config（ログ保管用S3）、CloudTrail（予定）</td></tr>
+            <tr><th scope="row">log-archive</th><td>security</td><td>全アカウントのログを集約し、改ざん・削除されないよう長期保管する</td><td>Config・CloudTrail（ログ保管用S3）</td></tr>
             <tr><th scope="row">audit</th><td>security</td><td>委任管理者として組織全体を監視し、セキュリティ通知・運用の受け皿になる</td><td>Config、GuardDuty・Security Hub（予定）</td></tr>
             <tr><th scope="row">test</th><td>workload</td><td>テスト環境のワークロード</td><td>-</td></tr>
             <tr><th scope="row">development</th><td>workload</td><td>開発環境のワークロード</td><td>-</td></tr>
@@ -118,7 +119,7 @@
           <thead><tr><th scope="col">サービス</th><th scope="col">できるようになること</th><th scope="col">設定値</th></tr></thead>
           <tbody>
             <tr><th scope="row">IAM Identity Center</th><td>1か所のログインで全アカウントにアクセスし、権限を割り当てる</td><td><code>sso.amazonaws.com</code></td></tr>
-            <tr><th scope="row">CloudTrail</th><td>全アカウントの操作ログを、1つの証跡でまとめて記録する</td><td><code>cloudtrail.amazonaws.com</code></td></tr>
+            <tr><th scope="row"><a href="cloudtrail.html">CloudTrail</a></th><td>全アカウントの操作ログを、1つの証跡でまとめて記録する</td><td><code>cloudtrail.amazonaws.com</code></td></tr>
             <tr><th scope="row">Config</th><td>全アカウントの設定の評価結果を集約し、ルールを全アカウントに展開する</td><td><code>config.amazonaws.com</code><br><code>config-multiaccountsetup.amazonaws.com</code></td></tr>
             <tr><th scope="row">GuardDuty</th><td>全アカウントの脅威検知（マルウェア保護を含む）を、auditでまとめて管理する</td><td><code>guardduty.amazonaws.com</code><br><code>malware-protection.guardduty.amazonaws.com</code></td></tr>
             <tr><th scope="row">Security Hub</th><td>全アカウントのセキュリティ検出結果を、auditに集約する</td><td><code>securityhub.amazonaws.com</code></td></tr>

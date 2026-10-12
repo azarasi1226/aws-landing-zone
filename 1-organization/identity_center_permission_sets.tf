@@ -52,14 +52,102 @@ locals {
       })
     }
     SecurityAudit = {
-      description      = "セキュリティ設定と、リソースの一覧・設定の閲覧のみ。データは読めない"
+      description      = "セキュリティ設定と、リソースの一覧・設定の閲覧、CloudTrailの操作ログの調査。それ以外のデータは読めない"
       session_duration = "PT4H"
       managed_policy_arns = [
         "arn:aws:iam::aws:policy/SecurityAudit",
         "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess",
       ]
-      inline_policy = null
+      # auditのAthenaでCloudTrailのログを調査できるようにする
+      # 対象のリソースは 2-foundation/cloudtrail.tf で作るものだけに絞る（名前を合わせる）
+      inline_policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Sid    = "RunCloudTrailQueries"
+            Effect = "Allow"
+            Action = [
+              "athena:StartQueryExecution",
+              "athena:StopQueryExecution",
+              "athena:GetQueryExecution",
+              "athena:GetQueryResults",
+              "athena:GetQueryResultsStream",
+              "athena:ListQueryExecutions",
+              "athena:GetWorkGroup",
+            ]
+            Resource = "arn:aws:athena:${var.region}:${local.cloudtrail_investigation.audit_account_id}:workgroup/cloudtrail"
+          },
+          {
+            Sid    = "ReadCloudTrailTable"
+            Effect = "Allow"
+            Action = [
+              "athena:GetDataCatalog",
+              "athena:ListDatabases",
+              "athena:GetDatabase",
+              "athena:ListTableMetadata",
+              "athena:GetTableMetadata",
+              "glue:GetDatabase",
+              "glue:GetDatabases",
+              "glue:GetTable",
+              "glue:GetTables",
+              "glue:GetPartition",
+              "glue:GetPartitions",
+            ]
+            Resource = [
+              "arn:aws:athena:${var.region}:${local.cloudtrail_investigation.audit_account_id}:datacatalog/AwsDataCatalog",
+              "arn:aws:glue:${var.region}:${local.cloudtrail_investigation.audit_account_id}:catalog",
+              "arn:aws:glue:${var.region}:${local.cloudtrail_investigation.audit_account_id}:database/cloudtrail",
+              "arn:aws:glue:${var.region}:${local.cloudtrail_investigation.audit_account_id}:table/cloudtrail/*",
+            ]
+          },
+          {
+            Sid      = "ReadCloudTrailLogs"
+            Effect   = "Allow"
+            Action   = ["s3:GetObject"]
+            Resource = "arn:aws:s3:::${local.cloudtrail_investigation.log_bucket}/cloudtrail/*"
+          },
+          {
+            Sid      = "ListCloudTrailLogs"
+            Effect   = "Allow"
+            Action   = ["s3:ListBucket"]
+            Resource = "arn:aws:s3:::${local.cloudtrail_investigation.log_bucket}"
+            Condition = {
+              StringLike = { "s3:prefix" = ["cloudtrail/*"] }
+            }
+          },
+          {
+            Sid      = "LocateCloudTrailLogs"
+            Effect   = "Allow"
+            Action   = ["s3:GetBucketLocation"]
+            Resource = "arn:aws:s3:::${local.cloudtrail_investigation.log_bucket}"
+          },
+          {
+            Sid    = "WriteQueryResults"
+            Effect = "Allow"
+            Action = [
+              "s3:GetObject",
+              "s3:PutObject",
+              "s3:AbortMultipartUpload",
+              "s3:ListMultipartUploadParts",
+            ]
+            Resource = "arn:aws:s3:::${local.cloudtrail_investigation.results_bucket}/*"
+          },
+          {
+            Sid      = "ListQueryResults"
+            Effect   = "Allow"
+            Action   = ["s3:ListBucket", "s3:GetBucketLocation"]
+            Resource = "arn:aws:s3:::${local.cloudtrail_investigation.results_bucket}"
+          },
+        ]
+      })
     }
+  }
+
+  # 2-foundation/cloudtrail.tf で作る、CloudTrailのログの調査に使うリソースの名前
+  cloudtrail_investigation = {
+    audit_account_id = local.account_ids["audit"]
+    log_bucket       = "log-archive-${local.account_ids["log-archive"]}"
+    results_bucket   = "athena-results-${local.account_ids["audit"]}"
   }
 
   sso_managed_policy_attachments = {

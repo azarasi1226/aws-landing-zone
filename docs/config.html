@@ -30,6 +30,7 @@
         <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
         <li class="nav-group">ログ・監査</li>
         <li><a href="config.html" aria-current="page">AWS Config</a></li>
+        <li><a href="cloudtrail.html">CloudTrail</a></li>
         <li class="nav-group">このリポジトリについて</li>
         <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
@@ -66,7 +67,7 @@
         <table>
           <thead><tr><th scope="col">項目</th><th scope="col">設定</th></tr></thead>
           <tbody>
-            <tr><th scope="row">バケット名</th><td><code>log-archive-&lt;log-archiveのアカウントID&gt;</code>。Configの記録は<code>config/</code>以下に保存される</td></tr>
+            <tr><th scope="row">バケット名</th><td><code>log-archive-&lt;log-archiveのアカウントID&gt;</code>。Configの記録は<code>config/</code>以下に保存される（<a href="cloudtrail.html">CloudTrail</a>のログは<code>cloudtrail/</code>以下）</td></tr>
             <tr><th scope="row">書き込み</th><td>バケットポリシーで、組織内のアカウントのConfigからだけ書き込める</td></tr>
             <tr><th scope="row">保管期間</th><td>365日で削除する（<code>log_retention_days</code>）。上書きされた古いバージョンは30日で削除する</td></tr>
             <tr><th scope="row">保護</th><td>パブリックアクセスをすべてブロックし、ACLは無効。暗号化（SSE-S3）とバージョニングを有効にする</td></tr>

@@ -30,6 +30,7 @@
         <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
         <li class="nav-group">ログ・監査</li>
         <li><a href="config.html">AWS Config</a></li>
+        <li><a href="cloudtrail.html">CloudTrail</a></li>
         <li class="nav-group">このリポジトリについて</li>
         <li><a href="terraform.html" aria-current="page">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
@@ -43,7 +44,7 @@
           <thead><tr><th scope="col">ディレクトリ</th><th scope="col">作るもの</th><th scope="col">操作するアカウント</th></tr></thead>
           <tbody>
             <tr><th scope="row"><code>1-organization/</code></th><td>組織、OU、アカウント、<a href="scp.html">SCP</a>、<a href="iam-identity-center.html">IAM Identity Center</a>、委任管理者の登録</td><td>management</td></tr>
-            <tr><th scope="row"><code>2-foundation/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
+            <tr><th scope="row"><code>2-foundation/</code></th><td>ログ保管用のS3バケット、<a href="config.html">AWS Config</a>のレコーダー・集約・組織ルール、<a href="cloudtrail.html">CloudTrail</a>の組織の証跡と調査用のAthena</td><td>全アカウント（managementから各アカウントのロールに切り替える）</td></tr>
           </tbody>
         </table>
       </section>
@@ -82,14 +83,14 @@
         <p>Configなどアカウント内の設定を変えるときに、組織・アカウント・SCPまでplanの対象にしないためです。</p>
 
         <h3>2-foundation/の中は1つにまとめている</h3>
-        <p>ログのバケット、Configのレコーダー、集約と組織ルールは、一緒に変更することが多く、作る順番もTerraformが依存関係から自動で決められるため、1つのstateにまとめています。</p>
+        <p>ログのバケットと、それを使うConfig・CloudTrailは、一緒に変更することが多く、作る順番もTerraformが依存関係から自動で決められるため、1つのstateにまとめています。</p>
       </section>
 
       <section aria-labelledby="operations">
         <h2 id="operations">運用手順</h2>
 
         <h3>applyの順番</h3>
-        <p><code>1-organization/</code>、<code>2-foundation/</code>の順にapplyします。<code>2-foundation/</code>は、<code>1-organization/</code>で作ったアカウントと、auditの<a href="organizations.html">委任管理者</a>の登録を前提にしているためです。<code>2-foundation/</code>の中の順番（ログのバケット → Configのレコーダー → 集約・組織ルール）は、Terraformが依存関係から自動で決めます。</p>
+        <p><code>1-organization/</code>、<code>2-foundation/</code>の順にapplyします。<code>2-foundation/</code>は、<code>1-organization/</code>で作ったアカウントと、auditの<a href="organizations.html">委任管理者</a>の登録を前提にしているためです。<code>2-foundation/</code>の中の順番（ログのバケット → Configのレコーダー・CloudTrailの証跡 → 集約・組織ルール）は、Terraformが依存関係から自動で決めます。</p>
 
         <h3>アカウントの追加</h3>
         <ol>
