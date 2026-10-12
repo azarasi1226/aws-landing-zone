@@ -7,13 +7,6 @@ AWS Organizationsの構成（OU、アカウント、SCP）と、IAM Identity Cen
 - `1-organization/`：組織の構成とアクセス管理
 - `2-account-baseline/`：各アカウント内の共通リソース
 
-## 目的
-
-- AWS Organizationsを用いたマルチアカウント構成を作成する
-- OUごとの責務分離とアカウント管理を行う
-- SCPによる共通ガードレールを適用する
-- IAM Identity Centerで、誰がどのアカウントにどの権限でアクセスできるかを管理する
-
 ## 前提条件
 
 以下は手動で用意済みであることを前提とし、このリポジトリでは作成しません。
@@ -22,67 +15,11 @@ AWS Organizationsの構成（OU、アカウント、SCP）と、IAM Identity Cen
 - Root OU：AWS Organizationsの有効化時に自動作成される
 - IAM Identity Center：management accountで組織インスタンスとして有効化し、Terraform実行者に管理者権限の許可セットを割り当て済み
 - Terraformのstateを保存するS3バケット
+- 各アカウントの`OrganizationAccountAccessRole`：Organizationsで作成したアカウントには自動で作られる。招待で参加したアカウントには、`2-account-baseline/`の実行前に作成する
 
 > Terraform実行者への管理者権限の割り当ては、設定ミスで自分が締め出されないよう、Terraformでは管理せず手動のまま残します。
 
-組織そのもの（`aws_organizations_organization`）はimportして管理し、management accountのIDとRoot OUのIDはそこから取得します。
-
-## AWS Organizationsの構成
-
-OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-landing-zone/organizations.html)にまとめています。
-
-## 管理対象
-
-| サービス | 対象アカウント | 概要 |
-|---|---|---|
-| [AWS Organizations](https://azarasi1226.github.io/aws-landing-zone/organizations.html) | management | OU・アカウントの作成と管理、委任管理者の登録 |
-| [SCP](https://azarasi1226.github.io/aws-landing-zone/scp.html) | 全アカウント | 全アカウント共通のガードレール |
-| [IAM Identity Center](https://azarasi1226.github.io/aws-landing-zone/iam-identity-center.html) | 全アカウント | グループ、許可セットと、各アカウントへの割り当て（ユーザーは手動管理） |
-| [AWS Config](https://azarasi1226.github.io/aws-landing-zone/config.html) | 全アカウント | 設定の記録（log-archiveに保管）、評価結果の集約と組織ルール（audit） |
-| [CloudTrail](https://azarasi1226.github.io/aws-landing-zone/cloudtrail.html) | 全アカウント | 操作ログの記録（組織の証跡、log-archiveに保管）、auditのAthenaで調査 |
-| [タグの方針](https://azarasi1226.github.io/aws-landing-zone/tagging.html) | 全アカウント | 必須タグを`default_tags`で付け、Configの`required-tags`ルールで漏れを検知 |
-
-## Terraform構成
-
-```text
-.
-├── README.md
-├── docs/
-├── 1-organization/          # entrypoint：managementで実行
-│   ├── main.tf              # 委任管理者の設定、配下OUの呼び出し
-│   ├── scp.tf               # Root OUに適用するSCP
-│   ├── identity_center.tf                  # Identity Centerの共通設定
-│   ├── identity_center_groups.tf           # グループと、アカウントへの割り当て
-│   ├── identity_center_permission_sets.tf  # 許可セット
-│   ├── providers.tf
-│   ├── backend.tf
-│   ├── backend.hcl.example
-│   ├── versions.tf
-│   ├── variables.tf
-│   ├── terraform.tfvars.example
-│   ├── outputs.tf           # アカウントID
-│   ├── security-ou/
-│   │   ├── main.tf          # OUとlog-archive、auditアカウントの作成
-│   │   └── scp.tf           # security-ouに適用するSCP
-│   ├── workload-ou/
-│   │   └── main.tf          # OUとtest、development、productionアカウントの作成
-│   └── modules/
-│       └── scp/             # SCPの定義と適用
-└── 2-account-baseline/      # entrypoint：managementで実行し、各アカウントのロールに切り替える
-    ├── providers.tf         # アカウントごとのprovider
-    ├── log_archive.tf       # ログ保管用S3バケット（log-archive）。Config・CloudTrailで共用
-    ├── config.tf            # Configのレコーダー（全アカウント）、アグリゲーター・組織ルール（audit）
-    ├── cloudtrail.tf        # CloudTrailの組織の証跡（management）、調査用のAthena（audit）
-    └── modules/
-        ├── accounts/        # アカウント名からアカウントIDを引く
-        └── config-recorder/ # 1アカウント分のConfigのレコーダー
-```
-
-`1-organization/`と`2-account-baseline/`は、それぞれ別のstateを持ちます。初回は`1-organization/`、`2-account-baseline/`の順にapplyします。
-
-分けている理由と、各アカウントへの入り方は[Terraformの構成のドキュメント](https://azarasi1226.github.io/aws-landing-zone/terraform.html)にまとめています。
-
-### 使い方
+## 使い方
 
 VS Codeで「Dev Containers: Reopen in Container」を実行し、dev containerの中で作業します。Terraformのバージョンは`.devcontainer/devcontainer.json`で固定しています。
 
@@ -97,16 +34,11 @@ terraform plan
 terraform apply
 ```
 
-`2-account-baseline/`も、同じ手順で実行します（`terraform.tfvars`は不要）。
+`2-account-baseline/`も、同じ手順で実行します（`terraform.tfvars`は不要）。初回は`1-organization/`、`2-account-baseline/`の順にapplyします。分けている理由、各アカウントへの入り方、アカウント追加の手順は[Terraformの構成のドキュメント](https://azarasi1226.github.io/aws-landing-zone/terraform.html)にまとめています。
 
-### アカウント追加時の手順
+## 既存リソースのTerraform移行
 
-1. `1-organization/`でアカウントを追加してapplyする
-2. `2-account-baseline/`の`providers.tf`と`config.tf`に、追加したアカウントのproviderとConfigのレコーダーを追加してapplyする
-
-### 既存リソースのTerraform移行
-
-既存の組織、OU、アカウントは、初回のplan前に`terraform import`で状態へ取り込みます。
+既存の組織、OU、アカウントは、初回のplan前に`terraform import`でstateへ取り込みます。
 
 ```bash
 terraform import aws_organizations_organization.this o-xxxxxxxxxx
@@ -120,4 +52,3 @@ terraform import module.workload_ou.aws_organizations_account.production 5555555
 ```
 
 import後の`terraform plan`で確認すべきことは、[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-landing-zone/organizations.html)にまとめています。
-
