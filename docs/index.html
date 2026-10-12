@@ -4,36 +4,62 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#102a43">
-  <meta name="description" content="AWS Organizationの設計方針と運用ドキュメント。">
-  <title>AWS Organization | ドキュメント</title>
+  <meta name="description" content="AWS Landing Zoneの設計方針と運用ドキュメント。">
+  <title>AWS Landing Zone | ドキュメント</title>
   <style>
-    :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.hero{padding:4.5rem max(1.25rem,calc((100% - 1020px)/2));color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(2rem,6vw,3.5rem);line-height:1.15}.hero p:last-child{max-width:700px;margin:1rem 0 0;color:#e0f2fe;font-size:1.08rem}.main{width:min(1020px,100%);margin:2rem auto;padding:0 1.25rem}.section-title{margin:0 0 1rem;color:#123b5d;font-size:1.4rem}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card{display:block;padding:1.35rem;border:1px solid #dbe5f0;border-radius:14px;background:#fff;box-shadow:0 10px 26px rgb(16 42 67 / 5%);color:inherit;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}.card:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgb(16 42 67 / 10%)}.card .eyebrow{color:#0e7490}.card h3{margin:.25rem 0 .45rem;color:#123b5d;font-size:1.2rem}.card p{margin:0;color:#52657a}.footer{width:min(1020px,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:640px){.hero{padding-top:3rem;padding-bottom:3rem}.cards{grid-template-columns:1fr}}
+    :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.hero{padding:4.5rem max(1.25rem,calc((100% - 1020px)/2));color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(2rem,6vw,3.5rem);line-height:1.15}.hero p:last-child{max-width:700px;margin:1rem 0 0;color:#e0f2fe;font-size:1.08rem}.main{width:min(1020px,100%);margin:2rem auto;padding:0 1.25rem}.section-title{margin:0 0 1rem;color:#123b5d;font-size:1.4rem}.cards+.section-title{margin-top:2.2rem}.card.is-static{border-style:dashed;background:#f8fafc;box-shadow:none;cursor:default}.card.is-static:hover{transform:none;box-shadow:none}.card.is-static h3{color:#52657a}.card.is-static .card-note{display:block;margin-top:.5rem;color:#7b93a8;font-size:.8rem}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card{display:block;padding:1.35rem;border:1px solid #dbe5f0;border-radius:14px;background:#fff;box-shadow:0 10px 26px rgb(16 42 67 / 5%);color:inherit;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}.card:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgb(16 42 67 / 10%)}.card .eyebrow{color:#0e7490}.card h3{margin:.25rem 0 .45rem;color:#123b5d;font-size:1.2rem}.card p{margin:0;color:#52657a}.footer{width:min(1020px,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:640px){.hero{padding-top:3rem;padding-bottom:3rem}.cards{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <header class="hero">
-    <h1>aws-landing-zone-docs</h1>
+    <h1>AWS Landing Zone ドキュメント</h1>
   </header>
   <main class="main">
-    <h2 class="section-title">ドキュメント</h2>
+    <h2 class="section-title">アカウント設計</h2>
     <div class="cards">
       <a class="card" href="organizations.html">
         <h3>AWS Organizations</h3>
+        <p>OUとアカウントの構成、委任管理者</p>
       </a>
+    </div>
+    <h2 class="section-title">ガバナンス</h2>
+    <div class="cards">
       <a class="card" href="scp.html">
         <h3>SCP</h3>
-      </a>
-      <a class="card" href="iam-identity-center.html">
-        <h3>IAM Identity Center</h3>
-      </a>
-      <a class="card" href="config.html">
-        <h3>AWS Config</h3>
+        <p>全アカウント共通のガードレール</p>
       </a>
       <a class="card" href="tagging.html">
         <h3>タグの方針</h3>
+        <p>必須タグと、付け方・検知の仕組み</p>
       </a>
+    </div>
+    <h2 class="section-title">ID・権限管理</h2>
+    <div class="cards">
+      <a class="card" href="iam-identity-center.html">
+        <h3>IAM Identity Center</h3>
+        <p>グループと許可セットによるアクセス管理</p>
+      </a>
+    </div>
+    <h2 class="section-title">ログ・監査</h2>
+    <div class="cards">
+      <a class="card" href="config.html">
+        <h3>AWS Config</h3>
+        <p>全アカウントの設定の記録と評価</p>
+      </a>
+      <div class="card is-static">
+        <h3>GuardDuty</h3>
+        <p>CloudTrailやVPCフローログなどを分析し、不正アクセスやマルウェアなどの脅威を検知する<span class="card-note">詳細ページなし</span></p>
+      </div>
+      <div class="card is-static">
+        <h3>Security Hub</h3>
+        <p>設定がセキュリティのベストプラクティスに沿っているかを評価し、GuardDutyなどの検知結果を1か所に集める<span class="card-note">詳細ページなし</span></p>
+      </div>
+    </div>
+    <h2 class="section-title">このリポジトリについて</h2>
+    <div class="cards">
       <a class="card" href="terraform.html">
         <h3>Terraformの構成</h3>
+        <p>実行単位の分け方と、各アカウントへの入り方</p>
       </a>
     </div>
   </main>

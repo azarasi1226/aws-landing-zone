@@ -85,7 +85,7 @@ OUの階層と各アカウントの役割は、[AWS Organizationsのドキュメ
 VS Codeで「Dev Containers: Reopen in Container」を実行し、dev containerの中で作業します。Terraformのバージョンは`.devcontainer/devcontainer.json`で固定しています。
 
 ```bash
-cd organization
+cd 1-organization
 cp backend.hcl.example backend.hcl            # stateのS3バケットを設定
 cp terraform.tfvars.example terraform.tfvars  # アカウントのメールアドレスを設定
 
@@ -117,11 +117,5 @@ terraform import module.workload_ou.aws_organizations_account.development 444444
 terraform import module.workload_ou.aws_organizations_account.production 555555555555
 ```
 
-import後の`terraform plan`で、以下に差分がないことを確認してからapplyします。
+import後の`terraform plan`で確認すべきことは、[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-landing-zone/organizations.html)にまとめています。
 
-- `aws_service_access_principals`：既に有効なサービスが変数に含まれていないと、そのサービスの信頼されたアクセスが無効化される
-- アカウントの`name`、`email`：既存の値と異なると、アカウントの作り直しになる場合がある
-
-## 設計上の注意点
-
-- SCPは管理アカウントには適用されない。管理アカウントはSCPに頼らず、アクセスできるユーザーとロールを最小限に絞る

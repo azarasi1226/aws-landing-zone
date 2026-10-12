@@ -8,6 +8,7 @@
   <style>
     :root{font-family:"Segoe UI","Yu Gothic UI",Meiryo,sans-serif;color:#172b4d;background:#f3f6fb;font-synthesis:none;text-rendering:optimizeLegibility}*{box-sizing:border-box}body{margin:0;line-height:1.75}a{color:#0759a5;text-decoration-thickness:1px;text-underline-offset:.18em}a:hover{color:#003d73}.site-header{padding:2.75rem max(1.25rem,calc((100% - 88rem)/2)) 2.25rem;color:#fff;background:linear-gradient(120deg,#102a43,#075985 72%,#0e7490)}.eyebrow{margin:0 0 .45rem;color:#bae6fd;font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.site-header h1{margin:0;font-size:clamp(1.8rem,5vw,2.65rem);line-height:1.2}.site-header p:last-child{max-width:720px;margin:.8rem 0 0;color:#e0f2fe}.layout{display:grid;grid-template-columns:12rem minmax(0,1fr);gap:1.5rem;width:min(90rem,100%);margin:2rem auto;padding:0 1.25rem}.sidebar{position:sticky;top:1.25rem;align-self:start;padding:1rem;border:1px solid #dbe5f0;border-radius:12px;background:#fff}.sidebar h2{margin:0 0 .65rem;color:#52657a;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.sidebar ul{display:grid;gap:.2rem;margin:0;padding:0;list-style:none}.sidebar a{display:block;padding:.45rem .6rem;border-radius:7px;color:#334e68;text-decoration:none}.sidebar a:hover,.sidebar a[aria-current=page]{color:#075985;background:#eaf6ff}.content{min-width:0;padding:clamp(1.25rem,4vw,2.5rem);border:1px solid #dbe5f0;border-radius:16px;background:#fff;box-shadow:0 12px 32px rgb(16 42 67 / 6%)}.content h2{margin:2.2rem 0 .8rem;padding-bottom:.45rem;border-bottom:1px solid #e3ebf3;color:#123b5d;font-size:1.35rem}.content h2:first-child{margin-top:0}.content h3{margin:1.65rem 0 .55rem;color:#245b7a;font-size:1.08rem}.content p,.content ul,.content ol{margin-top:.65rem;margin-bottom:.9rem}.content li+li{margin-top:.25rem}.content table{width:100%;margin:1rem 0 1.35rem;border-collapse:collapse;font-size:.94rem}.content th,.content td{padding:.7rem .8rem;border:1px solid #dbe5f0;text-align:left;vertical-align:top}.content th{color:#163b59;background:#edf5fb;font-weight:700}.content code{padding:.12em .35em;border:1px solid #e2e8f0;border-radius:4px;background:#f5f7fa;font-family:Consolas,"Cascadia Code",monospace;font-size:.9em;overflow-wrap:anywhere}.content blockquote{margin:1rem 0;padding:.75rem 1rem;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;background:#effaff}.content blockquote p{margin:0}.site-footer{width:min(90rem,100%);margin:0 auto;padding:0 1.25rem 2rem;color:#61758a;font-size:.88rem}@media(max-width:60em){.layout{grid-template-columns:1fr;gap:1rem;margin-top:1rem}.sidebar{position:static}.sidebar ul{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}.content{padding:1.25rem}.content table{display:block;overflow-x:auto}}
     .org-chart{margin:1.1rem 0 1.5rem}.group{padding:1rem 1.1rem 1.1rem;border-radius:14px}.group-org{border:2px solid #123b5d;background:#f7fafd}.group-root{border:2px dashed #9fbad1;background:#fff}.group-ou{border:1px solid #bfd4e5;background:#f2f8fd}.group-label{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:0;color:#123b5d;font-weight:700;line-height:1.5}.content .group-desc{margin:.2rem 0 .8rem;color:#52657a;font-size:.86rem;line-height:1.6}.ou-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:1rem}.content .accounts{display:grid;gap:.5rem;margin:0;padding:0;list-style:none}.group-root>.accounts{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1rem}.content .account{margin:0;padding:.55rem .75rem;border:1px solid #dbe5f0;border-radius:8px;background:#fff;line-height:1.5}.account-name{display:flex;align-items:center;gap:.45rem;color:#123b5d;font-weight:700}.account-desc{display:block;margin-top:.15rem;color:#61758a;font-size:.84rem}.badge{display:inline-block;min-width:5.6rem;padding:.05rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-align:center}.badge-ou{color:#075985;background:#dbeefe}.badge-account{color:#7c4a03;background:#fdf0d5}.tag-unmanaged{display:inline-block;margin-left:.15rem;padding:0 .45rem;border:1px dashed #94a3b8;border-radius:999px;color:#52657a;background:#fff;font-size:.7rem;font-weight:700;white-space:nowrap}.content .chart-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;margin:.6rem 0 0;color:#52657a;font-size:.84rem;line-height:1.6}.chart-note .tag-unmanaged{margin-left:0}.content .table-note{margin:-.8rem 0 1.35rem;color:#52657a;font-size:.86rem}.content details.once{margin:1.65rem 0 .9rem;padding:.6rem 1rem;border:1px solid #dbe5f0;border-radius:10px;background:#f8fafc;color:#52657a}.content details.once summary{color:#245b7a;font-weight:700;cursor:pointer}.content details.once[open] summary{margin-bottom:.4rem}.content details.once p,.content details.once ul{font-size:.92rem}.content tbody th,.content .nowrap{white-space:nowrap}@media(max-width:60em){.ou-grid,.group-root>.accounts{grid-template-columns:1fr}}
+  .sidebar .nav-group{grid-column:1/-1;margin-top:.6rem;padding:.7rem .6rem .15rem;border-top:1px solid #e3ebf3;color:#123b5d;font-size:.82rem;font-weight:700;letter-spacing:.04em}.sidebar .nav-group~li:not(.sidebar-external)>a{padding-left:1.4rem;font-size:.94rem}
   .sidebar-external{grid-column:1/-1;margin-top:.35rem;padding-top:.35rem;border-top:1px solid #dbe5f0}</style>
 </head>
 <body>
@@ -20,11 +21,16 @@
       <h2>ドキュメント</h2>
       <ul>
         <li><a href="index.html">ドキュメントトップ</a></li>
+        <li class="nav-group">アカウント設計</li>
         <li><a href="organizations.html" aria-current="page">AWS Organizations</a></li>
+        <li class="nav-group">ガバナンス</li>
         <li><a href="scp.html">SCP</a></li>
-        <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
-        <li><a href="config.html">AWS Config</a></li>
         <li><a href="tagging.html">タグの方針</a></li>
+        <li class="nav-group">ID・権限管理</li>
+        <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
+        <li class="nav-group">ログ・監査</li>
+        <li><a href="config.html">AWS Config</a></li>
+        <li class="nav-group">このリポジトリについて</li>
         <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-landing-zone" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
       </ul>
@@ -82,8 +88,8 @@
           <thead><tr><th scope="col">アカウント</th><th scope="col">OU</th><th scope="col">役割</th><th scope="col">主なサービス</th></tr></thead>
           <tbody>
             <tr><th scope="row">management</th><td>Root</td><td>Organizationsの構成管理、アカウントの作成・招待・削除、請求・予算・コスト管理、ルートユーザーの運用。アプリケーションやワークロードは配置しない</td><td>Organizations、IAM Identity Center、Billing</td></tr>
-            <tr><th scope="row">log-archive</th><td>security</td><td>全アカウントのログを集約し、改ざん・削除されないよう長期保管する</td><td>CloudTrail、Config（ログ保管用S3）</td></tr>
-            <tr><th scope="row">audit</th><td>security</td><td>委任管理者として組織全体を監視し、セキュリティ通知・運用の受け皿になる</td><td>GuardDuty、Security Hub、Config</td></tr>
+            <tr><th scope="row">log-archive</th><td>security</td><td>全アカウントのログを集約し、改ざん・削除されないよう長期保管する</td><td>Config（ログ保管用S3）、CloudTrail（予定）</td></tr>
+            <tr><th scope="row">audit</th><td>security</td><td>委任管理者として組織全体を監視し、セキュリティ通知・運用の受け皿になる</td><td>Config、GuardDuty・Security Hub（予定）</td></tr>
             <tr><th scope="row">test</th><td>workload</td><td>テスト環境のワークロード</td><td>-</td></tr>
             <tr><th scope="row">development</th><td>workload</td><td>開発環境のワークロード</td><td>-</td></tr>
             <tr><th scope="row">production</th><td>workload</td><td>本番環境のワークロード</td><td>-</td></tr>
@@ -121,7 +127,7 @@
         <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>1-organization/variables.tf</code></a>で設定する</p>
 
         <h3>委任管理者</h3>
-        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、<code>2-foundation/</code>からauditアカウントで行います。</p>
+        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、<code>2-foundation/</code>からauditアカウントで行います（現在はConfigのみ。GuardDuty・Security Hubは予定）。</p>
         <table>
           <thead><tr><th scope="col">サービス</th><th scope="col">どんなサービスか</th><th scope="col" class="nowrap">登録単位</th></tr></thead>
           <tbody>
@@ -138,7 +144,6 @@
         <h3>アカウントの追加</h3>
         <ol>
           <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/security-ou/main.tf"><code>1-organization/security-ou/main.tf</code></a>または<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/workload-ou/main.tf"><code>1-organization/workload-ou/main.tf</code></a>にアカウントを追加し、<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>account_emails</code></a>にメールアドレスを設定する</li>
-          <li>applyし、出力される<a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/outputs.tf"><code>account_ids</code></a>でアカウントIDを確認する</li>
           <li><code>2-foundation/</code>に追加したアカウントのproviderとConfigのレコーダーを追加してapplyする（<a href="terraform.html#operations">Terraformの構成</a>を参照）</li>
           <li>必要に応じて<a href="iam-identity-center.html">IAM Identity Center</a>のグループに新しいアカウントを割り当てる</li>
         </ol>
@@ -159,7 +164,7 @@
           <li>SCPはmanagementアカウントには適用されない。managementはSCPに頼らず、アクセスできるユーザーとロールを最小限に絞る</li>
           <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>aws_service_access_principals</code></a>からサービスを外すと、そのサービスの信頼されたアクセスが無効化される</li>
           <li>組織から外すには、そのアカウントに支払い方法などの登録が必要。外したアカウントはmanagementから見えなくなり、課金も別になる。不要になったアカウントは、組織から外さずにmanagementから閉鎖する</li>
-          <li>委任管理者のauditアカウントを変更すると、GuardDuty・Security Hubの集約設定もやり直しになる</li>
+          <li>委任管理者のauditアカウントを変更すると、Configのアグリゲーター・組織ルールと、GuardDuty・Security Hubの集約設定もやり直しになる</li>
         </ul>
       </section>
     </main>
