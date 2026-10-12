@@ -22,8 +22,10 @@
         <li><a href="index.html">ドキュメントトップ</a></li>
         <li><a href="organizations.html">AWS Organizations</a></li>
         <li><a href="scp.html">SCP</a></li>
-        <li><a href="tag-policy.html">タグポリシー</a></li>
         <li><a href="iam-identity-center.html" aria-current="page">IAM Identity Center</a></li>
+        <li><a href="config.html">AWS Config</a></li>
+        <li><a href="tagging.html">タグの方針</a></li>
+        <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-organization" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
       </ul>
     </nav>
@@ -66,7 +68,7 @@
             <tr><th scope="row">SecurityAudit</th><td>SecurityAudit<br>ViewOnlyAccess</td><td>セキュリティ設定とリソースの閲覧のみ。データは読めない</td><td class="nowrap">4時間</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/identity_center_permission_sets.tf"><code>root-ou/identity_center_permission_sets.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/identity_center_permission_sets.tf"><code>organization/identity_center_permission_sets.tf</code></a>で設定する</p>
 
         <h3>グループと割り当て</h3>
         <table>
@@ -77,7 +79,7 @@
             <tr><th scope="row">security-auditors</th><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td><td>SecurityAudit</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/identity_center_groups.tf"><code>root-ou/identity_center_groups.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/identity_center_groups.tf"><code>organization/identity_center_groups.tf</code></a>で設定する</p>
       </section>
 
       <section aria-labelledby="operations">

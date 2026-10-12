@@ -22,8 +22,10 @@
         <li><a href="index.html">ドキュメントトップ</a></li>
         <li><a href="organizations.html">AWS Organizations</a></li>
         <li><a href="scp.html" aria-current="page">SCP</a></li>
-        <li><a href="tag-policy.html">タグポリシー</a></li>
         <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
+        <li><a href="config.html">AWS Config</a></li>
+        <li><a href="tagging.html">タグの方針</a></li>
+        <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-organization" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
       </ul>
     </nav>
@@ -67,7 +69,7 @@
 
       <section aria-labelledby="configuration">
         <h2 id="configuration">設定内容</h2>
-        <p>「禁止する相手」が「除外ロール以外」のものは、aws-foundationリポジトリが各アカウントの設定に使う実行ロール（除外ロール）だけが実行できます。</p>
+        <p>「禁止する相手」が「除外ロール以外」のものは、<code>foundation/</code>が各アカウントの設定に使う実行ロール（除外ロール）だけが実行できます。</p>
 
         <h3>guardrails（Root）</h3>
         <table>
@@ -97,10 +99,10 @@
             <tr><td>EC2・ECS・EKS・Lambda・RDSの作成</td><td><span class="verdict verdict-allow">除外ロール以外</span></td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ Rootのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/scp.tf"><code>root-ou/scp.tf</code></a>、security OUのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/security-ou/scp.tf"><code>root-ou/security-ou/scp.tf</code></a>で設定する。許可リージョンと除外ロールは<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>root-ou/variables.tf</code></a>で指定する</p>
+        <p class="table-note">※ Rootのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/scp.tf"><code>organization/scp.tf</code></a>、security OUのものは<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/security-ou/scp.tf"><code>organization/security-ou/scp.tf</code></a>で設定する。許可リージョンと除外ロールは<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/variables.tf"><code>organization/variables.tf</code></a>で指定する</p>
 
         <h3>除外ロール</h3>
-        <p>既定は<code>OrganizationAccountAccessRole</code>です。aws-foundationリポジトリから、各アカウントのセキュリティサービスやログ保管用S3バケットを設定するために除外しています。ログの削除だけは除外ロールにも許可せず、古いログはS3のライフサイクルルールで削除します。</p>
+        <p>既定は<code>OrganizationAccountAccessRole</code>です。<code>foundation/</code>から、各アカウントのセキュリティサービスやログ保管用S3バケットを設定するために除外しています。ログの削除だけは除外ロールにも許可せず、古いログはS3のライフサイクルルールで削除します。</p>
       </section>
 
       <section aria-labelledby="notes">

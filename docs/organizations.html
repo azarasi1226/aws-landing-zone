@@ -22,8 +22,10 @@
         <li><a href="index.html">ドキュメントトップ</a></li>
         <li><a href="organizations.html" aria-current="page">AWS Organizations</a></li>
         <li><a href="scp.html">SCP</a></li>
-        <li><a href="tag-policy.html">タグポリシー</a></li>
         <li><a href="iam-identity-center.html">IAM Identity Center</a></li>
+        <li><a href="config.html">AWS Config</a></li>
+        <li><a href="tagging.html">タグの方針</a></li>
+        <li><a href="terraform.html">Terraformの構成</a></li>
         <li class="sidebar-external"><a href="https://github.com/azarasi1226/aws-organization" target="_blank" rel="noopener">GitHubリポジトリ（README） ↗</a></li>
       </ul>
     </nav>
@@ -36,7 +38,7 @@
             <p class="group-label">AWS Organizations</p>
             <div class="group group-root">
               <p class="group-label"><span class="badge badge-ou">OU</span>Root<span class="tag-unmanaged">Terraform管理外</span></p>
-              <p class="group-desc">組織の最上位。ここに付けたSCP・タグポリシーが配下全体に効く（SCPはmanagementを除く）</p>
+              <p class="group-desc">組織の最上位。ここに付けたSCPが配下全体に効く（managementを除く）</p>
               <ul class="accounts">
                 <li class="account"><span class="account-name"><span class="badge badge-account">Account</span>management<span class="tag-unmanaged">Terraform管理外</span></span><span class="account-desc">組織・アカウント・請求の管理</span></li>
               </ul>
@@ -68,7 +70,7 @@
         <table>
           <thead><tr><th scope="col">OU</th><th scope="col">親</th><th scope="col">役割</th><th scope="col">適用する<a href="scp.html">SCP</a>※</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Root</th><td>-</td><td>組織の最上位。全アカウント共通のガードレールとタグのルールを適用する</td><td>guardrails、region-restriction</td></tr>
+            <tr><th scope="row">Root</th><td>-</td><td>組織の最上位。全アカウント共通のガードレールを適用する</td><td>guardrails、region-restriction</td></tr>
             <tr><th scope="row">security</th><td>Root</td><td>組織全体のログを保管し、セキュリティの監視・監査を行うアカウントをまとめる</td><td>security-ou</td></tr>
             <tr><th scope="row">workload</th><td>Root</td><td>アプリケーションを動かすアカウントをまとめる</td><td>-</td></tr>
           </tbody>
@@ -87,7 +89,7 @@
             <tr><th scope="row">production</th><td>workload</td><td>本番環境のワークロード</td><td>-</td></tr>
           </tbody>
         </table>
-        <p>各アカウント内のリソース（ログ基盤、セキュリティ監視、アカウントベースラインなど）はaws-foundationリポジトリで作成します。このリポジトリが作るのはアカウントとOUまでです。</p>
+        <p>各アカウント内のリソース（ログ基盤、セキュリティ監視、アカウントベースラインなど）は、このリポジトリの<code>foundation/</code>で作成します。<code>organization/</code>が作るのはアカウントとOUまでです。</p>
       </section>
 
       <section aria-labelledby="configuration">
@@ -99,11 +101,10 @@
         <table>
           <thead><tr><th scope="col">ポリシー</th><th scope="col">できるようになること</th><th scope="col">設定値</th></tr></thead>
           <tbody>
-            <tr><th scope="row"><a href="scp.html">SCP</a></th><td>全アカウントの操作を、OU単位で制限する</td><td><a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/main.tf"><code>SERVICE_CONTROL_POLICY</code></a></td></tr>
-            <tr><th scope="row"><a href="tag-policy.html">タグポリシー</a></th><td>全アカウントのタグのキー名・値の表記を揃える</td><td><a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/main.tf"><code>TAG_POLICY</code></a></td></tr>
+            <tr><th scope="row"><a href="scp.html">SCP</a></th><td>全アカウントの操作を、OU単位で制限する</td><td><a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/main.tf"><code>SERVICE_CONTROL_POLICY</code></a></td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/main.tf"><code>root-ou/main.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/main.tf"><code>organization/main.tf</code></a>で設定する。タグのルールはタグポリシーを使わず、AWS Configで管理する（<a href="tagging.html">タグの方針</a>）</p>
 
         <h3>信頼されたアクセス</h3>
         <p>コンソールの「サービス」→「統合されたサービス」の一覧にある、「信頼されたアクセス」の設定です。AWSサービスに組織の情報へのアクセスを許可し、組織内の全アカウントをまとめて管理できるようにします。</p>
@@ -111,17 +112,16 @@
           <thead><tr><th scope="col">サービス</th><th scope="col">できるようになること</th><th scope="col">設定値</th></tr></thead>
           <tbody>
             <tr><th scope="row">IAM Identity Center</th><td>1か所のログインで全アカウントにアクセスし、権限を割り当てる</td><td><code>sso.amazonaws.com</code></td></tr>
-            <tr><th scope="row">タグポリシー</th><td>全アカウントのタグがタグポリシーに沿っているかを確認する</td><td><code>tagpolicies.tag.amazonaws.com</code></td></tr>
             <tr><th scope="row">CloudTrail</th><td>全アカウントの操作ログを、1つの証跡でまとめて記録する</td><td><code>cloudtrail.amazonaws.com</code></td></tr>
             <tr><th scope="row">Config</th><td>全アカウントの設定の評価結果を集約し、ルールを全アカウントに展開する</td><td><code>config.amazonaws.com</code><br><code>config-multiaccountsetup.amazonaws.com</code></td></tr>
             <tr><th scope="row">GuardDuty</th><td>全アカウントの脅威検知（マルウェア保護を含む）を、auditでまとめて管理する</td><td><code>guardduty.amazonaws.com</code><br><code>malware-protection.guardduty.amazonaws.com</code></td></tr>
             <tr><th scope="row">Security Hub</th><td>全アカウントのセキュリティ検出結果を、auditに集約する</td><td><code>securityhub.amazonaws.com</code></td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>root-ou/variables.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/variables.tf"><code>organization/variables.tf</code></a>で設定する</p>
 
         <h3>委任管理者</h3>
-        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、aws-foundationリポジトリからauditアカウントで行います。</p>
+        <p>本来managementでしか行えない「組織全体を対象にしたサービスの管理」を、auditアカウントに任せます。auditから全アカウント分のサービスを有効化し、検知・評価の結果をauditに集めて確認します。各サービスの設定は、<code>foundation/</code>からauditアカウントで行います。</p>
         <table>
           <thead><tr><th scope="col">サービス</th><th scope="col">どんなサービスか</th><th scope="col" class="nowrap">登録単位</th></tr></thead>
           <tbody>
@@ -130,23 +130,23 @@
             <tr><th scope="row">Config</th><td><strong>設定変更の記録</strong>。リソースの設定と変更履歴を記録し、ルールに沿っているかを評価する</td><td class="nowrap">組織全体で1回</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/main.tf"><code>root-ou/main.tf</code></a>で設定する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/main.tf"><code>organization/main.tf</code></a>で設定する</p>
       </section>
 
       <section aria-labelledby="operations">
         <h2 id="operations">運用手順</h2>
         <h3>アカウントの追加</h3>
         <ol>
-          <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/security-ou/main.tf"><code>root-ou/security-ou/main.tf</code></a>または<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/workload-ou/main.tf"><code>root-ou/workload-ou/main.tf</code></a>にアカウントを追加し、<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>account_emails</code></a>にメールアドレスを設定する</li>
-          <li>applyし、出力される<a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/outputs.tf"><code>account_ids</code></a>でアカウントIDを確認する</li>
-          <li>アカウントIDをaws-foundationリポジトリの変数に追加し、アカウント内のリソースを作成する</li>
+          <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/security-ou/main.tf"><code>organization/security-ou/main.tf</code></a>または<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/workload-ou/main.tf"><code>organization/workload-ou/main.tf</code></a>にアカウントを追加し、<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/variables.tf"><code>account_emails</code></a>にメールアドレスを設定する</li>
+          <li>applyし、出力される<a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/outputs.tf"><code>account_ids</code></a>でアカウントIDを確認する</li>
+          <li><code>foundation/</code>に追加したアカウントのproviderとConfigのレコーダーを追加してapplyする（<a href="config.html">AWS Config</a>を参照）</li>
           <li>必要に応じて<a href="iam-identity-center.html">IAM Identity Center</a>のグループに新しいアカウントを割り当てる</li>
         </ol>
         <details class="once">
           <summary>初回のみ：既存リソースの取り込み</summary>
           <p>既存の組織、OU、アカウントは、初回のplan前に<code>terraform import</code>でstateへ取り込みます。手順はREADMEを参照してください。import後のplanで、以下に差分がないことを確認してからapplyします。</p>
           <ul>
-            <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>aws_service_access_principals</code></a>：既に有効なサービスが含まれていないと、そのサービスの信頼されたアクセスが無効化される</li>
+            <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/variables.tf"><code>aws_service_access_principals</code></a>：既に有効なサービスが含まれていないと、そのサービスの信頼されたアクセスが無効化される</li>
             <li>アカウントの<code>name</code>、<code>email</code>：既存の値と異なると、アカウントの作り直しになる場合がある</li>
           </ul>
         </details>
@@ -157,7 +157,7 @@
         <ul>
           <li><strong>managementアカウントのルートユーザーとAdmin権限は、組織全体を変更できる最も強い権限。MFAを必須にし、日常の作業には使わない</strong></li>
           <li>SCPはmanagementアカウントには適用されない。managementはSCPに頼らず、アクセスできるユーザーとロールを最小限に絞る</li>
-          <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/root-ou/variables.tf"><code>aws_service_access_principals</code></a>からサービスを外すと、そのサービスの信頼されたアクセスが無効化される</li>
+          <li><a href="https://github.com/azarasi1226/aws-organization/blob/main/organization/variables.tf"><code>aws_service_access_principals</code></a>からサービスを外すと、そのサービスの信頼されたアクセスが無効化される</li>
           <li>組織から外すには、そのアカウントに支払い方法などの登録が必要。外したアカウントはmanagementから見えなくなり、課金も別になる。不要になったアカウントは、組織から外さずにmanagementから閉鎖する</li>
           <li>委任管理者のauditアカウントを変更すると、GuardDuty・Security Hubの集約設定もやり直しになる</li>
         </ul>
