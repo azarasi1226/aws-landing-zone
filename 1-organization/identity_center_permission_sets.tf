@@ -1,21 +1,22 @@
 # 許可セット。各グループへの割り当ては identity_center_groups.tf の local.sso_groups で行う
 
 locals {
+  # description は英数字と一部の記号しか使えない（日本語不可）
   sso_permission_sets = {
     Admin = {
-      description         = "管理者権限"
+      description         = "Full administrator access"
       session_duration    = "PT1H"
       managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess"]
       inline_policy       = null
     }
     PowerUser = {
-      description         = "IAM・Organizations・アカウント設定以外のすべての操作"
+      description         = "All operations except IAM, Organizations, and account settings"
       session_duration    = "PT4H"
       managed_policy_arns = ["arn:aws:iam::aws:policy/PowerUserAccess"]
       inline_policy       = null
     }
     Observer = {
-      description         = "リソースの閲覧と、障害調査のためのログ・メトリクスの読み取り。変更はできない"
+      description         = "Read-only access to resources, plus logs and metrics for troubleshooting"
       session_duration    = "PT4H"
       managed_policy_arns = ["arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"]
       # ViewOnlyAccessではログの中身とメトリクスの値が読めないため追加する
@@ -52,7 +53,7 @@ locals {
       })
     }
     SecurityAudit = {
-      description      = "セキュリティ設定と、リソースの一覧・設定の閲覧、CloudTrailの操作ログの調査。それ以外のデータは読めない"
+      description      = "Read-only security review, plus CloudTrail log investigation in audit"
       session_duration = "PT4H"
       managed_policy_arns = [
         "arn:aws:iam::aws:policy/SecurityAudit",

@@ -150,7 +150,7 @@
         </ol>
         <details class="once">
           <summary>初回のみ：既存リソースの取り込み</summary>
-          <p>既存の組織、OU、アカウントは、初回のplan前に<code>terraform import</code>でstateへ取り込みます。手順はREADMEを参照してください。import後のplanで、以下に差分がないことを確認してからapplyします。</p>
+          <p>既存の組織、OU、アカウントは、初回のplan前に<code>imports.tf</code>（<code>imports.tf.example</code>をコピーしてIDを書き換えたもの）のimportブロックでstateへ取り込みます。手順はREADMEの「初期構築」を参照してください。import後のplanで、以下に差分がないことを確認してからapplyします。</p>
           <ul>
             <li><a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/1-organization/variables.tf"><code>aws_service_access_principals</code></a>：既に有効なサービスが含まれていないと、そのサービスの信頼されたアクセスが無効化される</li>
             <li>アカウントの<code>name</code>、<code>email</code>：既存の値と異なると、アカウントの作り直しになる場合がある</li>

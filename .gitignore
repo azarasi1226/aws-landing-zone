@@ -8,3 +8,6 @@ crash.*.log
 # 環境ごとの値（.example をコピーして作成する）
 backend.hcl
 terraform.tfvars
+
+# 既存リソースの取り込み用（アカウントIDを含むためコミットしない）
+imports.tf

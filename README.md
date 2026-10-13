@@ -7,48 +7,64 @@ AWS Organizationsの構成（OU、アカウント、SCP）と、IAM Identity Cen
 - `1-organization/`：組織の構成とアクセス管理
 - `2-account-baseline/`：各アカウント内の共通リソース
 
-## 前提条件
+`1-organization/`と`2-account-baseline/`は、それぞれ別のstateを持ち、この順にapplyします。分けている理由、各アカウントへの入り方、アカウント追加の手順は[Terraformの構成のドキュメント](https://azarasi1226.github.io/aws-landing-zone/terraform.html)にまとめています。
 
-以下は手動で用意済みであることを前提とし、このリポジトリでは作成しません。
+## 初期構築
 
-- management account：AWS Organizationsを有効化したアカウント
-- Root OU：AWS Organizationsの有効化時に自動作成される
-- IAM Identity Center：management accountで組織インスタンスとして有効化し、Terraform実行者に管理者権限の許可セットを割り当て済み
-- Terraformのstateを保存するS3バケット
-- 各アカウントの`OrganizationAccountAccessRole`：Organizationsで作成したアカウントには自動で作られる。招待で参加したアカウントには、`2-account-baseline/`の実行前に作成する
+環境ごとに1回だけ行います。作業はVS Codeの「Dev Containers: Reopen in Container」で開いたdev containerの中で行います（Terraformのバージョンは`.devcontainer/devcontainer.json`で固定）。
 
-> Terraform実行者への管理者権限の割り当ては、設定ミスで自分が締め出されないよう、Terraformでは管理せず手動のまま残します。
+### 1. 手動で準備する
 
-## 使い方
+以下はTerraformでは作成しないため、コンソールで用意します。
 
-VS Codeで「Dev Containers: Reopen in Container」を実行し、dev containerの中で作業します。Terraformのバージョンは`.devcontainer/devcontainer.json`で固定しています。
+1. management accountで、AWS Organizationsを有効化する（Root OUは自動で作成される）
+2. IAM Identity Centerを組織インスタンスとして有効化し、Terraform実行者に管理者権限（`AdministratorAccess`）の許可セットを割り当てる
+3. Terraformのstateを保存するS3バケットを作成する
+4. 組織に招待で参加させたアカウントがある場合は、そのアカウントに`OrganizationAccountAccessRole`を作成する（Organizationsで作成したアカウントには自動で作られる）
+
+> Terraform実行者への管理者権限の割り当ては、設定ミスで自分が締め出されないよう、Terraformでは管理せず手動のまま残します。PowerUserなど、IAMやOrganizationsを操作できない権限では実行できません。
+
+### 2. 1-organization/を適用する
 
 ```bash
 cd 1-organization
 cp backend.hcl.example backend.hcl            # stateのS3バケットを設定
 cp terraform.tfvars.example terraform.tfvars  # アカウントのメールアドレスを設定
+cp imports.tf.example imports.tf              # 既存の組織・OU・アカウントのIDを設定
 
 export AWS_PROFILE=<managementの管理者プロファイル>
 terraform init -backend-config=backend.hcl
-terraform plan
-terraform apply
+terraform plan -out=tfplan
+terraform apply tfplan
+rm imports.tf                                 # 取り込みが終わったら削除する
 ```
 
-`2-account-baseline/`も、同じ手順で実行します（`terraform.tfvars`は不要）。初回は`1-organization/`、`2-account-baseline/`の順にapplyします。分けている理由、各アカウントへの入り方、アカウント追加の手順は[Terraformの構成のドキュメント](https://azarasi1226.github.io/aws-landing-zone/terraform.html)にまとめています。
+- `imports.tf`には、既にある組織・OU・アカウントのIDを書きます。組織は必須で、OUとアカウントは既にあるものだけを書きます。まだないものは、applyで新しく作られます
+- 既にあるアカウントの`terraform.tfvars`のメールアドレスは、実際の値と1文字も違わないようにします。違うとアカウントの作り直しになり、`prevent_destroy`でplanがエラーになります
+- applyの前に、planに`destroy`や`replace`がないことを確認します。そのほかの確認点は[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-landing-zone/organizations.html)にまとめています
+- 作成した直後のauditアカウントを、GuardDuty・Security Hubの委任管理者に登録するところで、エラーになることがあります。数分待ってからもう一度applyすると成功します
 
-## 既存リソースのTerraform移行
-
-既存の組織、OU、アカウントは、初回のplan前に`terraform import`でstateへ取り込みます。
+### 3. 2-account-baseline/を適用する
 
 ```bash
-terraform import aws_organizations_organization.this o-xxxxxxxxxx
-terraform import module.security_ou.aws_organizations_organizational_unit.this ou-xxxx-xxxxxxxx
-terraform import module.security_ou.aws_organizations_account.log_archive 111111111111
-terraform import module.security_ou.aws_organizations_account.audit 222222222222
-terraform import module.workload_ou.aws_organizations_organizational_unit.this ou-xxxx-yyyyyyyy
-terraform import module.workload_ou.aws_organizations_account.test 333333333333
-terraform import module.workload_ou.aws_organizations_account.development 444444444444
-terraform import module.workload_ou.aws_organizations_account.production 555555555555
+cd 2-account-baseline
+cp backend.hcl.example backend.hcl            # stateのS3バケットを設定
+
+terraform init -backend-config=backend.hcl
+terraform plan -out=tfplan
+terraform apply tfplan
 ```
 
-import後の`terraform plan`で確認すべきことは、[AWS Organizationsのドキュメント](https://azarasi1226.github.io/aws-landing-zone/organizations.html)にまとめています。
+既にConfigを使っているアカウントがある場合は、[AWS Configのドキュメント](https://azarasi1226.github.io/aws-landing-zone/config.html)を参照してください。
+
+## 日常の運用
+
+変更するディレクトリで、planで差分を確認してからapplyします。
+
+```bash
+export AWS_PROFILE=<managementの管理者プロファイル>
+terraform plan -out=tfplan
+terraform apply tfplan
+```
+
+`backend.hcl`と`terraform.tfvars`はGit管理外のため、新しい環境で作業するときは、初期構築と同じく`.example`からコピーして作成します。

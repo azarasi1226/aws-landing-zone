@@ -1,0 +1,53 @@
+# 既存の組織・OU・アカウントをstateに取り込む（初期構築のときに1回だけ）
+#
+# 1. cp imports.tf.example imports.tf でコピーし、IDを実際の値に書き換える
+# 2. terraform plan で、取り込む内容と、取り込んだ後の差分を確認する（destroy や replace が出ないこと）
+# 3. terraform apply で取り込む
+# 4. imports.tf を削除する（アカウントIDを含むためコミットしない。.gitignore で除外済み）
+
+# 組織（必須）。IDは Organizations のコンソールの「設定」で確認できる
+import {
+  to = aws_organizations_organization.this
+  id = "o-xxxxxxxxxx"
+}
+
+# ------------------------------------------------------------
+# 以下は、既にあるものだけコメントを外して書き換える
+# ないものは取り込まずに、applyで新しく作られる
+# OUの名前が違っても取り込める（applyで security / workload に変わる。作り直しにはならない）
+# ------------------------------------------------------------
+
+# import {
+#   to = module.security_ou.aws_organizations_organizational_unit.this
+#   id = "ou-xxxx-xxxxxxxx"
+# }
+
+# import {
+#   to = module.security_ou.aws_organizations_account.log_archive
+#   id = "111111111111"
+# }
+
+# import {
+#   to = module.security_ou.aws_organizations_account.audit
+#   id = "222222222222"
+# }
+
+# import {
+#   to = module.workload_ou.aws_organizations_organizational_unit.this
+#   id = "ou-xxxx-yyyyyyyy"
+# }
+
+# import {
+#   to = module.workload_ou.aws_organizations_account.test
+#   id = "333333333333"
+# }
+
+# import {
+#   to = module.workload_ou.aws_organizations_account.development
+#   id = "444444444444"
+# }
+
+# import {
+#   to = module.workload_ou.aws_organizations_account.production
+#   id = "555555555555"
+# }
