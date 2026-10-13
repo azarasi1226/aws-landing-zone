@@ -85,7 +85,7 @@
             <tr><th scope="row"><code>required-tags</code></th><td>必須タグが付いていない、または値が違うリソース。詳しくは<a href="tagging.html">タグの方針</a>を参照</td></tr>
           </tbody>
         </table>
-        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/config.tf"><code>2-account-baseline/config.tf</code></a>で、リージョンごとに作成する</p>
+        <p class="table-note">※ <a href="https://github.com/azarasi1226/aws-landing-zone/blob/main/2-account-baseline/config.tf"><code>2-account-baseline/config.tf</code></a>で、リージョンごとに作成する。managementアカウントには、組織ルールを受け取るためのサービスリンクロール（<code>AWSServiceRoleForConfigMultiAccountSetup</code>）が自動では作られないため、別に作成している</p>
       </section>
 
       <section aria-labelledby="operations">

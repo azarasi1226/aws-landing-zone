@@ -117,6 +117,11 @@ resource "aws_config_configuration_aggregator" "organization" {
   depends_on = [aws_iam_role_policy_attachment.config_aggregator]
 }
 
+# 組織ルールを委任管理者（audit）から展開するとき、managementアカウントにはこのロールが自動で作られないため、別に作る
+resource "aws_iam_service_linked_role" "config_multi_account_setup" {
+  aws_service_name = "config-multiaccountsetup.amazonaws.com"
+}
+
 # 必須タグが付いていないリソースを検出する。検出するだけで、作成や変更は止めない
 resource "aws_config_organization_managed_rule" "required_tags" {
   provider = aws.audit
@@ -134,6 +139,7 @@ resource "aws_config_organization_managed_rule" "required_tags" {
   ]...))
 
   depends_on = [
+    aws_iam_service_linked_role.config_multi_account_setup,
     module.config_management,
     module.config_log_archive,
     module.config_audit,
